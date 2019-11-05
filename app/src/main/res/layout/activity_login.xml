@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.nickb.kotlininst.views.KeyboardAwareScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:id="@+id/scroll_view"
+>
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".activities.LoginActivity">
+
+        <ImageView android:layout_width="match_parent" android:layout_height="80dp"
+                   android:id="@+id/instagram_image"
+                   android:src="@drawable/instlogotw"
+                   android:layout_marginStart="50dp"
+                   android:layout_marginEnd="50dp"
+                   android:layout_marginTop="50dp"
+                   app:layout_constraintTop_toTopOf="parent"
+        />
+
+        <EditText
+                android:id="@+id/email_input"
+                app:layout_constraintTop_toBottomOf="@id/instagram_image"
+                style="@style/big_input"
+                android:layout_marginTop="40dp"
+                android:inputType="textEmailAddress"
+                android:hint="Email"/>
+
+        <EditText
+                android:id="@+id/password_input"
+                app:layout_constraintTop_toBottomOf="@id/email_input"
+                style="@style/big_input"
+                android:inputType="textPassword"
+                android:hint="Password"/>
+
+        <Button android:id="@+id/login_btn"
+                app:layout_constraintTop_toBottomOf="@id/password_input"
+                android:text="Log In"
+                style="@style/big_btn"
+        />
+
+        <TextView
+                android:id="@+id/create_account_text"
+                android:layout_width="match_parent" android:layout_height="@dimen/toolbar_height"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  android:text="@string/create_account"
+                  android:gravity="center"
+                  android:background="@drawable/top_border_gray"
+
+        />
+
+
+    </android.support.constraint.ConstraintLayout>
+</ru.nickb.kotlininst.views.KeyboardAwareScrollView>

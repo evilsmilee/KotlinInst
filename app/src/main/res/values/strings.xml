@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">KotlinInst</string>
+    <string name="user_name">Юзер</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="create_account">Don`t have an account?
+        <b>Sign up.</b>
+    </string>
+    <string name="please_enter_password">Пожалуйста введите пароль</string>
+</resources>
