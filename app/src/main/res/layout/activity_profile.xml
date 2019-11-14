@@ -18,11 +18,12 @@
                 android:layout_height="wrap_content">
 
             <TextView
-                      app:layout_constraintStart_toStartOf="parent"
-                      app:layout_constraintTop_toTopOf="parent"
-                      app:layout_constraintBottom_toBottomOf="parent"
-                      style="@style/toolbar_title"
-                      android:id="@+id/username_text"
+                    tools:text="user.name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/toolbar_title"
+                    android:id="@+id/username_text"
             />
 
             <ImageView style="@style/icon"
@@ -63,7 +64,7 @@
             app:layout_constraintHorizontal_weight="2"/>
 
     <TextView
-            android:text="50"
+            tools:text="50"
             style="@style/profile_text_count"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toTopOf="@id/edit_profile_button"
@@ -72,35 +73,35 @@
             app:layout_constraintEnd_toEndOf="@id/posts_text"
              android:id="@+id/posts_count_text"/>
     <TextView
-            android:text="posts"
+            android:text="@string/posts"
             style="@style/profile_text"
             app:layout_constraintTop_toBottomOf="@id/posts_count_text"
             app:layout_constraintStart_toStartOf="@id/edit_profile_button"
             app:layout_constraintEnd_toStartOf="@id/followers_text"
             android:id="@+id/posts_text"/>
     <TextView
-            android:text="100"
+            tools:text="100"
             style="@style/profile_text_count"
             app:layout_constraintBaseline_toBaselineOf="@id/posts_count_text"
             app:layout_constraintStart_toStartOf="@id/followers_text"
             app:layout_constraintEnd_toEndOf="@id/followers_text"
             android:id="@+id/followers_count_text"/>
     <TextView
-            android:text="followers"
+            android:text="@string/followers"
             style="@style/profile_text"
             app:layout_constraintBaseline_toBaselineOf="@id/posts_text"
             app:layout_constraintStart_toEndOf="@id/posts_text"
             app:layout_constraintEnd_toStartOf="@id/following_text"
             android:id="@+id/followers_text"/>
     <TextView
-            android:text="200"
+            tools:text="200"
             style="@style/profile_text_count"
             app:layout_constraintBaseline_toBaselineOf="@id/posts_count_text"
             app:layout_constraintStart_toStartOf="@id/following_text"
             app:layout_constraintEnd_toEndOf="@id/following_text"
             android:id="@+id/following_count_text"/>
     <TextView
-            android:text="following"
+            android:text="@string/following"
             style="@style/profile_text"
             app:layout_constraintStart_toEndOf="@id/followers_text"
             app:layout_constraintEnd_toEndOf="@id/edit_profile_button"

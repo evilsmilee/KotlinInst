@@ -13,14 +13,14 @@
                android:id="@+id/person_image"/>
 
     <EditText style="@style/big_input"
-              android:hint="Email"
+              android:hint="@string/email"
               android:id="@+id/email_input"
               android:inputType="textEmailAddress"
               app:layout_constraintTop_toBottomOf="@id/person_image"/>
 
     <Button style="@style/big_btn"
             android:id="@+id/next_btn"
-            android:text="Next"
+            android:text="@string/next"
             app:layout_constraintTop_toBottomOf="@id/email_input"
     />
 
