@@ -25,7 +25,7 @@ class AddFriendsActivity : AppCompatActivity(),
 
         mAdapter = FriendsAdapter(this)
 
-        mViewModel = ViewModelProviders.of(this)
+        mViewModel = ViewModelProviders.of(this, AddFriendsViewModelFactory())
             .get(AddFriendViewModel::class.java)
 
         back_image.setOnClickListener { finish() }

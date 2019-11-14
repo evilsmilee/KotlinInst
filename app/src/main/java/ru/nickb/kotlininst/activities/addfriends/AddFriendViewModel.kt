@@ -27,7 +27,6 @@ class AddFriendViewModel(private val repository: AddFriendsRepository) : ViewMod
     }
 
    fun setFollow(currentUid: String, uid: String, follow: Boolean): Task<Void> {
-
            return if (follow) {
                Tasks.whenAll(
                    repository.addFollow(currentUid, uid),
