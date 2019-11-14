@@ -25,7 +25,7 @@ interface AddFriendsRepository {
     fun deleteFeedPosts(postsAuthorUid: String, uid: String): Task<Unit>
 }
 
-class AddFriendsRepositoryImpl: AddFriendsRepository {
+class FirebaseAddFriendsRepository: AddFriendsRepository {
     private val reference = FirebaseDatabase.getInstance().reference
 
     override fun getUsers(): LiveData<List<User>> =

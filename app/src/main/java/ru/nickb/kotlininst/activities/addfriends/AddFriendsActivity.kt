@@ -9,10 +9,7 @@ import kotlinx.android.synthetic.main.activity_add_friends.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.User
 
-class AddFriendsActivity : AppCompatActivity(),
-    FriendsAdapter.Listener {
-
-
+class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
     private lateinit var mViewModel: AddFriendViewModel
     private lateinit var mUser: User
     private lateinit var mUsers: List<User>

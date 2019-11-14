@@ -6,6 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 @Suppress("UNCHECKED_CAST")
 class AddFriendsViewModelFactory: ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return AddFriendViewModel(AddFriendsRepositoryImpl()) as T
+        return AddFriendViewModel(FirebaseAddFriendsRepository()) as T
     }
 }
