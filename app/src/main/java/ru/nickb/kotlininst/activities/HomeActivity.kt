@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
@@ -59,7 +59,8 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
                         .sortedByDescending { it.timestampDate() }
                     mAdapter = FeedAdapter(this, posts)
                     feed_recycler.adapter = mAdapter
-                    feed_recycler.layoutManager = LinearLayoutManager(this)
+                    feed_recycler.layoutManager =
+                        androidx.recyclerview.widget.LinearLayoutManager(this)
                 })
         }
     }
@@ -97,9 +98,9 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
 data class FeedPostLikes( val likesCount: Int, val likedByUser: Boolean)
 
 class FeedAdapter(private val listener: Listener, private val posts: List<FeedPost>)
-    : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view)
 
     private var postLikes: Map<Int, FeedPostLikes> = emptyMap()
     private  val defaultPostLikes =  FeedPostLikes(0, false)
@@ -121,7 +122,6 @@ class FeedAdapter(private val listener: Listener, private val posts: List<FeedPo
     }
 
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = posts[position]
 
@@ -134,7 +134,8 @@ class FeedAdapter(private val listener: Listener, private val posts: List<FeedPo
                likes_text.visibility = View.GONE
            } else {
                likes_text.visibility = View.GONE
-               likes_text.text = "${likes.likesCount} likes"
+               val likesCountText = holder.view.context.resources.getQuantityString(R.plurals.likes_count, likes.likesCount)
+               likes_text.text = likes.likesCount.toString() + " " + likesCountText
            }
             caption_text.setCaptionText(post.username, post.caption)
             like_image.setOnClickListener { listener.toogleLike(post.id) }
@@ -152,7 +153,7 @@ class FeedAdapter(private val listener: Listener, private val posts: List<FeedPo
             SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
         usernameSpannable.setSpan(object: ClickableSpan() {
             override fun onClick(widget: View) {
-                widget.context.showToast("Username is clicked")
+                widget.context.showToast(context.getString(R.string.user_name_is_clicked))
             }
             override fun updateDrawState(ds: TextPaint?) {}
         }, 0, usernameSpannable.length,

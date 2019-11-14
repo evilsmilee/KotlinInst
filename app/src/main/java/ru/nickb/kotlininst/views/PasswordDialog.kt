@@ -1,9 +1,9 @@
 package ru.nickb.kotlininst.views
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.content.Context
 import kotlinx.android.synthetic.main.dialog_password.view.*
 import ru.nickb.kotlininst.R

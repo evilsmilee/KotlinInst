@@ -2,11 +2,12 @@ package ru.nickb.kotlininst.activities
 
 
 
+
+import androidx.fragment.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -46,11 +47,11 @@ class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFr
                             .addToBackStack(null)
                             .commit()
                 } else {
-                    showToast("This email already exists")
+                    showToast(getString(R.string.email_already_exists))
                 }
             }
         } else {
-            showToast("Please enter email")
+            showToast(getString(R.string.enter_email))
         }
     }
 
@@ -66,18 +67,17 @@ class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFr
                         }
                     }
             } else {
-                Log.e("BigError", "OnRegister email is null")
-                showToast("Please enter full name and password")
+                showToast(getString(R.string.enter_fullname_or_pwd))
                 supportFragmentManager.popBackStack()
             }
         } else {
-            showToast("Please enter full name and password")
+            showToast(getString(R.string.enter_fullname_or_pwd))
         }
     }
 
     private fun unkownRegisterError(it: Task<out Any>) {
         Log.e("BigError", "failed to create user", it.exception)
-        showToast("Something wrong happened. Please try again leter")
+        showToast(getString(R.string.something_wrong))
     }
 
     private fun startHomeActivity() {
@@ -117,7 +117,7 @@ class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFr
                                                         onSuccess: (List<String>) -> Unit) {
         fetchSignInMethodsForEmail(email).addOnCompleteListener {
             if (it.isSuccessful) {
-                onSuccess(it.result!!.signInMethods ?: emptyList<String>())
+                onSuccess(it.result!!.signInMethods ?: emptyList())
 
             } else {
                 showToast(it.exception!!.message!!)

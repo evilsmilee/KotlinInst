@@ -2,7 +2,7 @@ package ru.nickb.kotlininst.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity(),   View.OnClickListener, KeyboardVisib
                         }
                     }
                 } else {
-                    showToast("Please enter email and password")
+                    showToast(getString(R.string.please_enter_pwd))
                 }
             }
             R.id.create_account_text -> {

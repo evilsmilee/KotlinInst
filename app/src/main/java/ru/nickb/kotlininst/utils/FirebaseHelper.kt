@@ -1,6 +1,6 @@
 package ru.nickb.kotlininst.utils
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -11,7 +11,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import ru.nickb.kotlininst.activities.showToast
 
-class FirebaseHelper(private val activity: Activity) {
+class FirebaseHelper(private val activity: AppCompatActivity) {
      val auth: FirebaseAuth = FirebaseAuth.getInstance()
      val storage: StorageReference = FirebaseStorage.getInstance()
         .reference

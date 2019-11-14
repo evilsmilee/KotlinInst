@@ -1,6 +1,6 @@
 package ru.nickb.kotlininst.activities
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import android.content.Context
 import android.text.Editable
@@ -36,7 +36,7 @@ fun ImageView.loadImage(image: String) =
 
 
 private fun View.ifNotDestroyed(block: () -> Unit) {
-    if (!(context as Activity).isDestroyed) {
+    if (!(context as AppCompatActivity).isDestroyed) {
         block()
     }
 }

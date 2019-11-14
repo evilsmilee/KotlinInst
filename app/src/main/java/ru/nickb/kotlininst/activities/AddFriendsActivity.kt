@@ -1,9 +1,9 @@
 package ru.nickb.kotlininst.activities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +37,7 @@ class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
 
         back_image.setOnClickListener { finish() }
         add_friends_recycler.adapter = mAdapter
-        add_friends_recycler.layoutManager = LinearLayoutManager(this)
+        add_friends_recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
 
         mFirebase.database.child("users").addValueEventListener(ValueEventListenerAdapter {
             val allusers = it.children.map { it.asUser()!! }
@@ -98,13 +98,13 @@ class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
 
 
 
-class FriendsAdapter(private val listener: Listener) : RecyclerView.Adapter<FriendsAdapter.ViewHolder>() {
+class FriendsAdapter(private val listener: Listener) : androidx.recyclerview.widget.RecyclerView.Adapter<FriendsAdapter.ViewHolder>() {
 
             private var mPositions = mapOf<String, Int>()
             private var mUsers = listOf<User>()
             private var mFollows = mapOf<String, Boolean>()
 
-            class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+            class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view)
 
             interface Listener {
                 fun follow(uid: String)

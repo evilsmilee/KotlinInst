@@ -1,6 +1,5 @@
 package ru.nickb.kotlininst.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -35,7 +34,7 @@ class ShareActivity : BaseActivity(2) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == mCamera.REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 GlideApp.with(this).load(mCamera.imageUri).centerCrop().into(post_image)
             } else {
                 finish()

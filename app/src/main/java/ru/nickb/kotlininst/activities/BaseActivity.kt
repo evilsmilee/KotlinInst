@@ -1,7 +1,7 @@
 package ru.nickb.kotlininst.activities
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 import ru.nickb.kotlininst.R

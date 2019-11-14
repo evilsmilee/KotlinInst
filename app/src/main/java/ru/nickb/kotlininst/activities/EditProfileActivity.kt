@@ -1,9 +1,8 @@
 package ru.nickb.kotlininst.activities
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.EmailAuthProvider
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import ru.nickb.kotlininst.R
@@ -47,7 +46,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == mCamera.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == mCamera.REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK) {
             // upload image to firebase storage
             mFirebase.
             uploadUserPhoto(mCamera.imageUri!!) {
@@ -102,7 +101,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
                 }
             }
         } else {
-            showToast("You should enter your password")
+            showToast(getString(R.string.enter_your_password))
         }
     }
 
@@ -116,17 +115,19 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
         if(user.phone != mUser.phone) updatesMap["phone"] = user.phone
 
        mFirebase.updateUser(updatesMap) {
-            showToast("Profile saved")
+            showToast(getString(R.string.profile_saved))
             finish()
         }
 
     }
 
-    private fun validate(user: User): String? = when {user.name.isEmpty() -> "Please enter name"
-        user.username.isEmpty() -> "Please enter username"
-        user.email.isEmpty() -> "Please enter email"
-        else -> null
-    }
+    private fun validate(user: User): String? =
+        when {
+            user.name.isEmpty() -> getString(R.string.enter_name)
+            user.username.isEmpty() -> getString(R.string.enter_username)
+            user.email.isEmpty() -> getString(R.string.enter_email)
+            else -> null
+        }
 
 
 }
