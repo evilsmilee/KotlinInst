@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
@@ -65,6 +67,10 @@ fun Editable.toStringOrNull(): String? {
     val str = toString()
     return if (str.isEmpty()) null else str
 }
+
+
+fun <A, B> LiveData<A>.map(f: (A) -> B): LiveData<B> =
+    Transformations.map(this, f)
 
 fun coordinateBtnAndInputs(btn: Button, vararg inputs: EditText) {
     val watcher = object: TextWatcher {
