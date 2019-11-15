@@ -1,13 +1,21 @@
 package ru.nickb.kotlininst.activities
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 import ru.nickb.kotlininst.R
 
 
-abstract class BaseActivity(val navNumber: Int) : AppCompatActivity() {
+abstract class BaseActivity(private val navNumber: Int) : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
 
     fun setupBottomNavigation() {
         bottom_navigation_view.setTextVisibility(false)

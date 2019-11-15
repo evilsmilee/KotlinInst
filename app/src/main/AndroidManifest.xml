@@ -20,7 +20,7 @@
         <activity android:name=".activities.RegisterActivity"
                   android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
-        <activity android:name=".activities.EditProfileActivity">
+        <activity android:name=".activities.editprofile.EditProfileActivity">
         </activity>
         <activity android:name=".activities.HomeActivity">
             <intent-filter>

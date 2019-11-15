@@ -12,13 +12,9 @@ import com.google.firebase.storage.UploadTask
 import ru.nickb.kotlininst.activities.showToast
 
 class FirebaseHelper(private val activity: AppCompatActivity) {
-     val auth: FirebaseAuth = FirebaseAuth.getInstance()
-     val storage: StorageReference = FirebaseStorage.getInstance()
-        .reference
-     val database: DatabaseReference = FirebaseDatabase.getInstance()
-        .reference
 
-    fun uploadUserPhoto(photo: Uri, onSuccess: (UploadTask.TaskSnapshot) -> Unit) {
+
+  /*  fun uploadUserPhoto(photo: Uri, onSuccess: (UploadTask.TaskSnapshot) -> Unit) {
         storage.child("users/${currentUid()!!}/photo")
             .putFile(photo)
             .addOnCompleteListener{
@@ -29,18 +25,17 @@ class FirebaseHelper(private val activity: AppCompatActivity) {
                 }
             }
     }
-
-    fun getDownloadUrl(onSuccess: (url: String) -> Unit) {
+*/
+  /*  fun getDownloadUrl(onSuccess: (url: String) -> Unit) {
         storage.child("users/${currentUid()!!}/photo")
             .downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
                 onSuccess(it.result.toString())
             }
         }
-    }
+    }*/
 
-   fun updateUserPhoto(photoUrl: String,
-                                            onSuccess: () -> Unit) {
+ /*  fun updateUserPhoto(photoUrl: String, onSuccess: () -> Unit) {
         database.child("users/${currentUid()!!}/photo").setValue(photoUrl)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -49,9 +44,9 @@ class FirebaseHelper(private val activity: AppCompatActivity) {
                     activity.showToast(it.exception!!.message!!)
                 }
             }
-    }
+    }*/
 
-     fun updateUser(updates: Map<String, Any?>, onSuccess: () -> Unit) {
+    /* fun updateUser(updates: Map<String, Any?>, onSuccess: () -> Unit) {
         database.child("users").child(currentUid()!!).updateChildren(updates)
             .addOnCompleteListener{
                 if(it.isSuccessful) {
@@ -60,10 +55,10 @@ class FirebaseHelper(private val activity: AppCompatActivity) {
                     activity.showToast(it.exception!!.message!!)
                 }
             }
-    }
+    }*/
 
 
-     fun updateEmail(email: String, onSuccess: () -> Unit) {
+    /* fun updateEmail(email: String, onSuccess: () -> Unit) {
         auth.currentUser!!.updateEmail(email).addOnCompleteListener {
             if (it.isSuccessful) {
                 onSuccess()
@@ -81,7 +76,7 @@ class FirebaseHelper(private val activity: AppCompatActivity) {
                 activity.showToast(it.exception!!.message!!)
             }
         }
-    }
+    }*/
 
     fun currentUserReference(): DatabaseReference =
         database.child("users").child(currentUid()!!)

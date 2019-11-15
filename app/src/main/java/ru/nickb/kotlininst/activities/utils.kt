@@ -59,8 +59,8 @@ fun DataSnapshot.asFeedPost(): FeedPost? =
 fun DatabaseReference.setValueTrueOrRemove(value: Boolean) =
     if (value) setValue(true) else removeValue()
 
-fun Context.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, text, duration).show()
+fun Context.showToast(text: String?, duration: Int = Toast.LENGTH_SHORT) {
+    text?.let { Toast.makeText(this, it, duration).show()  }
 }
 
 fun Editable.toStringOrNull(): String? {

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.activities.addfriends.AddFriendsActivity
+import ru.nickb.kotlininst.activities.editprofile.EditProfileActivity
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.utils.FirebaseHelper
 import ru.nickb.kotlininst.utils.ValueEventListenerAdapter

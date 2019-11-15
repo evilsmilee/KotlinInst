@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_add_friends.*
 import ru.nickb.kotlininst.R
+import ru.nickb.kotlininst.activities.ViewModelFactory
+import ru.nickb.kotlininst.activities.showToast
 import ru.nickb.kotlininst.models.User
 
 class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
@@ -22,7 +24,7 @@ class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
 
         mAdapter = FriendsAdapter(this)
 
-        mViewModel = ViewModelProviders.of(this, AddFriendsViewModelFactory())
+        mViewModel = ViewModelProviders.of(this, ViewModelFactory())
             .get(AddFriendViewModel::class.java)
 
         back_image.setOnClickListener { finish() }
@@ -56,6 +58,6 @@ class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
     private fun setFollow(uid: String, follow: Boolean, onSuccess: () -> Unit) {
         mViewModel.setFollow(mUser.uid, uid, follow)
             .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { it.message!! }
+            .addOnFailureListener { showToast(it.message) }
     }
 }
