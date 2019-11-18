@@ -1,9 +1,12 @@
 package ru.nickb.kotlininst.data.firebase
 
 import com.google.android.gms.tasks.Task
-import ru.nickb.kotlininst.activities.task
+import ru.nickb.kotlininst.common.TaskSourceOnCompleteListener
+import ru.nickb.kotlininst.common.ValueEventListenerAdapter
+import ru.nickb.kotlininst.common.task
+import ru.nickb.kotlininst.common.toUnit
 import ru.nickb.kotlininst.data.FeedPostsRepository
-import ru.nickb.kotlininst.utils.*
+import ru.nickb.kotlininst.data.firebase.common.database
 
 class FirebaseFeedPostsRepository: FeedPostsRepository {
 

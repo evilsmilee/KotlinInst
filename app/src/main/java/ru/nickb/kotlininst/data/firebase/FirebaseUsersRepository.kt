@@ -6,11 +6,13 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import ru.nickb.kotlininst.activities.asUser
-import ru.nickb.kotlininst.activities.map
-import ru.nickb.kotlininst.activities.task
+import ru.nickb.kotlininst.common.task
+import ru.nickb.kotlininst.common.toUnit
+import ru.nickb.kotlininst.data.common.map
+import ru.nickb.kotlininst.data.firebase.common.*
+
+
 import ru.nickb.kotlininst.models.User
-import ru.nickb.kotlininst.utils.*
 
 class FirebaseUsersRepository: UsersRepository {
 
@@ -62,11 +64,11 @@ class FirebaseUsersRepository: UsersRepository {
      }
 
      override fun uploadUserPhoto(localImage: Uri): Task<Uri> =
-          task {taskSource ->
+          task { taskSource ->
                storage.child("users/${currentUid()!!}/photo").putFile(localImage)
                     .addOnSuccessListener {
-                    taskSource.setResult(it?.uploadSessionUri!!)
-               }
+                         taskSource.setResult(it?.uploadSessionUri!!)
+                    }
           }
 
 
