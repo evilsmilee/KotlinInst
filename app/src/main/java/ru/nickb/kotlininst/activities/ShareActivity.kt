@@ -7,12 +7,9 @@ import kotlinx.android.synthetic.main.activity_share.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.FeedPost
 import ru.nickb.kotlininst.models.User
-import ru.nickb.kotlininst.utils.CameraHelper
-import ru.nickb.kotlininst.utils.FirebaseHelper
-import ru.nickb.kotlininst.utils.GlideApp
-import ru.nickb.kotlininst.utils.ValueEventListenerAdapter
+import ru.nickb.kotlininst.utils.*
 
-class ShareActivity : BaseActivity(2) {
+class ShareActivity : BaseActivity() {
 
     private lateinit var mCamera: CameraHelper
     private lateinit var mFirebase: FirebaseHelper
@@ -25,7 +22,6 @@ class ShareActivity : BaseActivity(2) {
         mCamera.takeCameraPicture()
         back_image.setOnClickListener { finish() }
         share_text.setOnClickListener { share() }
-
         mFirebase.currentUserReference().addValueEventListener(ValueEventListenerAdapter{
            mUser =  it.asUser()!!
         })
@@ -46,13 +42,13 @@ class ShareActivity : BaseActivity(2) {
         val imageUri = mCamera.imageUri
         if (imageUri != null) {
             val uid = mFirebase.currentUid()!!
-            mFirebase.storage.child("users").child(uid).child("images")
+            storage.child("users").child(uid).child("images")
                 .child(imageUri.lastPathSegment!!).putFile(imageUri).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        mFirebase.database.child("images").child(uid).push()
+                        database.child("images").child(uid).push()
                             .setValue(imageUri.toString())
                         if (it.isSuccessful) {
-                            mFirebase.database.child("feed-posts").child(uid)
+                            database.child("feed-posts").child(uid)
                                 .push().setValue(mkFeedPost(uid, imageUri))
                                 .addOnCompleteListener {
                                     if (it.isSuccessful) {

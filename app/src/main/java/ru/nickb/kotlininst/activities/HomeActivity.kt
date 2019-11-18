@@ -1,18 +1,14 @@
 package ru.nickb.kotlininst.activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +20,11 @@ import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.FeedPost
 import ru.nickb.kotlininst.utils.FirebaseHelper
 import ru.nickb.kotlininst.utils.ValueEventListenerAdapter
+import ru.nickb.kotlininst.utils.auth
+import ru.nickb.kotlininst.utils.database
+import ru.nickb.kotlininst.views.setupBottomNavigation
 
-class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
+class HomeActivity : BaseActivity(), FeedAdapter.Listener {
 
 
     private lateinit var mAdapter: FeedAdapter
@@ -35,9 +34,9 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        setupBottomNavigation()
+        setupBottomNavigation(0)
         mFirebase = FirebaseHelper(this)
-        mFirebase.auth.addAuthStateListener {
+        auth.addAuthStateListener {
             if (it.currentUser == null) {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
@@ -48,12 +47,12 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = mFirebase.auth.currentUser
+        val currentUser = auth.currentUser
         if (currentUser == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
-            mFirebase.database.child("feed-posts").child(currentUser.uid)
+           database.child("feed-posts").child(currentUser.uid)
                 .addValueEventListener(ValueEventListenerAdapter {
                     val posts = it.children.map { it.asFeedPost()!! }
                         .sortedByDescending { it.timestampDate() }
@@ -66,7 +65,7 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
     }
 
     override fun toogleLike(postId: String) {
-        val reference = mFirebase.database.child("likes").child(postId).child(mFirebase.currentUid()!!)
+        val reference = database.child("likes").child(postId).child(mFirebase.currentUid()!!)
         reference
             .addListenerForSingleValueEvent(ValueEventListenerAdapter{
                 reference.setValueTrueOrRemove(!it.exists())
@@ -76,7 +75,7 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
 
     override fun loadLikes(postId: String, position: Int) {
         fun createListener() =
-            mFirebase.database.child("likes").child(postId).addValueEventListener(
+            database.child("likes").child(postId).addValueEventListener(
             ValueEventListenerAdapter{
                 val usersLikes = it.children.map { it.key }.toSet()
                 val postLikes = FeedPostLikes(
@@ -91,7 +90,7 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
 
     override fun onDestroy() {
         super.onDestroy()
-        mLikesListeners.values.forEach{mFirebase.database.removeEventListener(it)}
+        mLikesListeners.values.forEach{database.removeEventListener(it)}
     }
 }
 

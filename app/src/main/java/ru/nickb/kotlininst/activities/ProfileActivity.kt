@@ -16,16 +16,18 @@ import ru.nickb.kotlininst.activities.editprofile.EditProfileActivity
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.utils.FirebaseHelper
 import ru.nickb.kotlininst.utils.ValueEventListenerAdapter
+import ru.nickb.kotlininst.utils.database
+import ru.nickb.kotlininst.views.setupBottomNavigation
 
 
-class ProfileActivity : BaseActivity(4) {
+class ProfileActivity : BaseActivity() {
     private lateinit var mUser: User
     private lateinit var mFirebase: FirebaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        setupBottomNavigation()
+        setupBottomNavigation(4)
 
         edit_profile_button.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
@@ -47,7 +49,7 @@ class ProfileActivity : BaseActivity(4) {
         })
 
         images_recycler.layoutManager = GridLayoutManager(this, 3)
-        mFirebase.database.child("images").child(mFirebase.currentUid()!!)
+            database.child("images").child(mFirebase.currentUid()!!)
             .addValueEventListener(ValueEventListenerAdapter{
               val images =   it.children.map { it.getValue(String::class.java)!! }
                 images_recycler.adapter = ImagesAdapter(images + images + images + images)

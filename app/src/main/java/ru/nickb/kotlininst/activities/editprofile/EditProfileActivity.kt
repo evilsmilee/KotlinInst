@@ -7,15 +7,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import ru.nickb.kotlininst.R
-import ru.nickb.kotlininst.activities.ViewModelFactory
-import ru.nickb.kotlininst.activities.loadUserPhoto
-import ru.nickb.kotlininst.activities.showToast
-import ru.nickb.kotlininst.activities.toStringOrNull
+import ru.nickb.kotlininst.activities.*
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.utils.CameraHelper
 import ru.nickb.kotlininst.views.PasswordDialog
 
-class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
+class EditProfileActivity : BaseActivity(), PasswordDialog.Listener {
 
 
     private lateinit var mUser: User
@@ -34,7 +31,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
         change_photo_text.setOnClickListener { mCamera.takeCameraPicture() }
 
 
-        mViewModel = ViewModelProviders.of(this, ViewModelFactory()).get(EditProfileViewModel::class.java)
+        mViewModel = initViewModel()
 
         mViewModel.user.observe(this, Observer {
             it?.let {
@@ -54,9 +51,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == mCamera.REQUEST_CODE && resultCode == RESULT_OK) {
 
-            mViewModel.uploadAndSetUserPhoto(mCamera.imageUri!!).addOnFailureListener {
-                showToast(it.message)
-            }
+            mViewModel.uploadAndSetUserPhoto(mCamera.imageUri!!)
 
         }
     }
@@ -107,9 +102,6 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
 
     private fun updateUser(user: User) {
         mViewModel.updateUserProfile(currentUser = mUser, newUser = user)
-            .addOnFailureListener {
-                showToast(it.message)
-            }
             .addOnSuccessListener {
                 showToast(getString(R.string.profile_saved))
                 finish()

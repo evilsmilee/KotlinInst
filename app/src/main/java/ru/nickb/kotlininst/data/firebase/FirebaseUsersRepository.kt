@@ -1,30 +1,18 @@
-package ru.nickb.kotlininst.activities.editprofile
+package ru.nickb.kotlininst.data
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
-import ru.nickb.kotlininst.activities.addfriends.toUnit
+import com.google.firebase.auth.FirebaseAuth
 import ru.nickb.kotlininst.activities.asUser
 import ru.nickb.kotlininst.activities.map
 import ru.nickb.kotlininst.activities.task
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.utils.*
 
-interface EditProfileRepository {
-     fun getUser(): LiveData<User>
-     fun uploadUserPhoto(localImage: Uri): Task<Uri>
-     fun updateUserPhoto(downloadUrl: Uri): Task<Unit>
-     fun updateEmail(currentEmail: String, newEmail: String, password: String): Task<Unit>
-     fun updateUserProfile(currentUser: User, newUser: User): Task<Unit>
-
-
-
-
-}
-
-class FirebaseEditProfileRepository: EditProfileRepository {
+class FirebaseUsersRepository: UsersRepository {
 
      override fun updateUserProfile(currentUser: User, newUser: User): Task<Unit> {
           val updatesMap = mutableMapOf<String, Any?>()
@@ -36,6 +24,26 @@ class FirebaseEditProfileRepository: EditProfileRepository {
           if(newUser.phone != currentUser.phone) updatesMap["phone"] = newUser.phone
           return database.child("users").child(currentUid()!!).updateChildren(updatesMap).toUnit()
      }
+
+     override fun getUsers(): LiveData<List<User>> =
+          database.child("users").liveData().map{
+               it.children.map { it.asUser()!! }
+          }
+
+     override fun addFollow(fromUid: String, toUid: String): Task<Unit> =
+          getFollowsRef(fromUid, toUid).setValue(true).toUnit()
+
+
+     override fun deleteFollow(fromUid: String, toUid: String): Task<Unit> =
+          getFollowsRef(fromUid, toUid).removeValue().toUnit()
+
+
+     override fun addFollower(fromUid: String, toUid: String): Task<Unit> =
+          getFollowersRef(fromUid, toUid).setValue(true).toUnit()
+
+
+     override fun deleteFollower(fromUid: String, toUid: String): Task<Unit> =
+          getFollowersRef(fromUid, toUid).removeValue().toUnit()
 
      override fun updateEmail(
           currentEmail: String,
@@ -71,5 +79,12 @@ class FirebaseEditProfileRepository: EditProfileRepository {
                it.asUser()!!
           }
 
+     override fun currentUid() = FirebaseAuth.getInstance().currentUser?.uid
+
+     private fun getFollowsRef(fromUid: String, toUid: String) =
+          database.child("users").child(fromUid).child("follows").child(toUid)
+
+     private fun getFollowersRef(fromUid: String, toUid: String) =
+          database.child("users").child(toUid).child("followers").child(fromUid)
 
 }
