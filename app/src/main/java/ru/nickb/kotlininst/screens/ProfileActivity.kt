@@ -22,6 +22,7 @@ import ru.nickb.kotlininst.data.firebase.common.FirebaseHelper
 import ru.nickb.kotlininst.common.ValueEventListenerAdapter
 import ru.nickb.kotlininst.data.firebase.common.database
 import ru.nickb.kotlininst.screens.common.setupBottomNavigation
+import ru.nickb.kotlininst.screens.profilesettings.ProfileSettingsActivity
 
 
 class ProfileActivity : BaseActivity() {

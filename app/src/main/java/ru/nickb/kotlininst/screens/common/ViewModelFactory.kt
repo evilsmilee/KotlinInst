@@ -3,10 +3,13 @@ package ru.nickb.kotlininst.screens.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.tasks.OnFailureListener
+import ru.nickb.kotlininst.common.firebase.FirebaseAuthManager
 import ru.nickb.kotlininst.screens.addfriends.AddFriendViewModel
 import ru.nickb.kotlininst.data.firebase.FirebaseFeedPostsRepository
 import ru.nickb.kotlininst.screens.editprofile.EditProfileViewModel
 import ru.nickb.kotlininst.data.FirebaseUsersRepository
+import ru.nickb.kotlininst.screens.home.HomeViewModel
+import ru.nickb.kotlininst.screens.profilesettings.ProfileSettingsViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val onFailureListener: OnFailureListener): ViewModelProvider.Factory {
@@ -16,6 +19,10 @@ class ViewModelFactory(private val onFailureListener: OnFailureListener): ViewMo
         }
         else if (modelClass.isAssignableFrom(EditProfileViewModel::class.java)) {
             return EditProfileViewModel(onFailureListener,FirebaseUsersRepository()) as T
+        } else if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            return HomeViewModel(onFailureListener, FirebaseFeedPostsRepository()) as T
+        } else if(modelClass.isAssignableFrom(ProfileSettingsViewModel::class.java)) {
+            return ProfileSettingsViewModel(FirebaseAuthManager()) as T
         }
         else {
             error("Unknown view model class $modelClass")

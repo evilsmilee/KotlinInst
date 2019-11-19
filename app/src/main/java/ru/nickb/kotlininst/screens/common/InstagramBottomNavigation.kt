@@ -10,6 +10,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.screens.*
+import ru.nickb.kotlininst.screens.home.HomeActivity
 
 class InstagramBottomNavigation (private val bnv: BottomNavigationViewEx, private val navNumber: Int,
                                  activity: Activity): LifecycleObserver {
@@ -57,9 +58,10 @@ class InstagramBottomNavigation (private val bnv: BottomNavigationViewEx, privat
 }
 
 fun BaseActivity.setupBottomNavigation(navNumber: Int) {
-    InstagramBottomNavigation(
+    val bnv = InstagramBottomNavigation(
         bottom_navigation_view,
         navNumber,
         this
     )
+    this.lifecycle.addObserver(bnv)
 }

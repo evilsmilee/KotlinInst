@@ -1,6 +1,7 @@
 package ru.nickb.kotlininst.screens.common
 
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import ru.nickb.kotlininst.screens.LoginActivity
 
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -27,5 +29,10 @@ abstract class BaseActivity : AppCompatActivity() {
     inline fun <reified T : ViewModel> initViewModel(): T = ViewModelProviders.of(this,
         ViewModelFactory(commonViewModel)
     ).get(T::class.java)
+
+    fun goToLogin() {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+    }
 
 }

@@ -3,11 +3,13 @@ package ru.nickb.kotlininst.screens.addfriends
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.add_firends_item.view.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.screens.common.loadUserPhoto
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.SimpleCallback
 
 class FriendsAdapter(private val listener: Listener) :
     RecyclerView.Adapter<FriendsAdapter.ViewHolder>() {
@@ -32,30 +34,31 @@ class FriendsAdapter(private val listener: Listener) :
     override fun getItemCount() = mUsers.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(holder) {
+        with(holder.view) {
             val user = mUsers[position]
-            view.photo_image.loadUserPhoto(user.photo!!)
-            view.username_text.text = user.username
-            view.name_text.text = user.name
-            view.follow_btn.setOnClickListener { listener.follow(user.uid) }
-            view.unfollow_btn.setOnClickListener { listener.unfollow(user.uid) }
+            photo_image.loadUserPhoto(user.photo!!)
+            username_text.text = user.username
+            name_text.text = user.name
+            follow_btn.setOnClickListener { listener.follow(user.uid) }
+            unfollow_btn.setOnClickListener { listener.unfollow(user.uid) }
             val follows = mFollows[user.uid] ?: false
             if (follows) {
-                view.follow_btn.visibility = View.GONE
-                view.unfollow_btn.visibility = View.VISIBLE
+                follow_btn.visibility = View.GONE
+                unfollow_btn.visibility = View.VISIBLE
             } else {
-                view.follow_btn.visibility = View.VISIBLE
-                view.unfollow_btn.visibility = View.GONE
+                follow_btn.visibility = View.VISIBLE
+                unfollow_btn.visibility = View.GONE
             }
         }
     }
 
 
     fun update(users: List<User>, follows: Map<String, Boolean>) {
+        val diffResult = DiffUtil.calculateDiff(SimpleCallback(mUsers, users) {it.uid})
         mUsers = users
         mPositions = users.withIndex().map { (idx, user) -> user.uid to idx }.toMap()
         mFollows = follows
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun followed(uid: String) {

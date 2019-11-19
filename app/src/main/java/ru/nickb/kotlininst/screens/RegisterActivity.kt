@@ -23,6 +23,7 @@ import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
 import ru.nickb.kotlininst.screens.common.showToast
+import ru.nickb.kotlininst.screens.home.HomeActivity
 
 class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFragment.Listener{
      private var mEmail: String? = null

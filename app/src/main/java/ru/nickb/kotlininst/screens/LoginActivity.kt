@@ -12,6 +12,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
 import ru.nickb.kotlininst.screens.common.showToast
+import ru.nickb.kotlininst.screens.home.HomeActivity
 
 class LoginActivity : AppCompatActivity(),   View.OnClickListener, KeyboardVisibilityEventListener {
 
