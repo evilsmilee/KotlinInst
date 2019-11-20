@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -21,20 +22,30 @@ import kotlinx.android.synthetic.main.fragment_register_email.*
 import kotlinx.android.synthetic.main.fragment_register_namepass.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
 import ru.nickb.kotlininst.screens.common.showToast
 import ru.nickb.kotlininst.screens.home.HomeActivity
 
-class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFragment.Listener{
-     private var mEmail: String? = null
-     private lateinit var mAuth: FirebaseAuth
-     private lateinit var mDataBase: DatabaseReference
+class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragment.Listener{
+     private lateinit var mViewModel: RegisterViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        mAuth = FirebaseAuth.getInstance()
-        mDataBase = FirebaseDatabase.getInstance().reference
 
+        mViewModel = initViewModel()
+        mViewModel.goToNamePassScreen.observe(this, Observer {
+            supportFragmentManager.beginTransaction().replace(R.id.frame_layout, NamePassFragment())
+                .addToBackStack(null)
+                .commit()
+        })
+        mViewModel.goToHomeScreen.observe(this, Observer {
+            startHomeActivity()
+        })
+        mViewModel.goBackToEmailScreen.observe(this, Observer {
+            supportFragmentManager.popBackStack()
+        })
         if(savedInstanceState == null) {
             supportFragmentManager.beginTransaction().add(R.id.frame_layout, EmailFragment()).commit()
         }
@@ -42,90 +53,18 @@ class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFr
 
 
     override fun onNext(email: String) {
-        if (email.isNotEmpty()) {
-            mEmail = email
-            mAuth.fetchSignInMethodsForEmail(email) {signInMethods ->
-                if (signInMethods.isEmpty()) {
-                        supportFragmentManager.beginTransaction().replace(R.id.frame_layout, NamePassFragment())
-                            .addToBackStack(null)
-                            .commit()
-                } else {
-                    showToast(getString(R.string.email_already_exists))
-                }
-            }
-        } else {
-            showToast(getString(R.string.enter_email))
-        }
+        mViewModel.onEmailEntered(email)
     }
 
 
     override fun onRegister(fullName: String, password: String) {
-        if(fullName.isNotEmpty() && password.isNotEmpty()) {
-            val email = mEmail
-            if(email != null) {
-                mAuth.createUserWithEmailAndPassword(email, password)
-                    {
-                        mDataBase.createUser(it.user.uid, mkUser(fullName, email)) {
-                                startHomeActivity()
-                        }
-                    }
-            } else {
-                showToast(getString(R.string.enter_fullname_or_pwd))
-                supportFragmentManager.popBackStack()
-            }
-        } else {
-            showToast(getString(R.string.enter_fullname_or_pwd))
-        }
+        mViewModel.onRegister(fullName, password)
     }
 
-    private fun unkownRegisterError(it: Task<out Any>) {
-        Log.e("BigError", "failed to create user", it.exception)
-        showToast(getString(R.string.something_wrong))
-    }
 
     private fun startHomeActivity() {
         startActivity(Intent(this, HomeActivity::class.java))
         finish()
-    }
-
-    private fun mkUser(fullName: String, email: String): User {
-        val username = mkUsername(fullName)
-        return User(name = fullName, username = username, email = email)
-    }
-
-    private fun mkUsername(fullName: String) = fullName.toLowerCase().replace(" ", ".")
-
-    private fun FirebaseAuth.createUserWithEmailAndPassword(email: String, password: String, onSuccess: (AuthResult) -> Unit) {
-            createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-                if(it.isSuccessful) {
-                    onSuccess(it.result!!)
-                } else {
-                    unkownRegisterError(it)
-                }
-            }
-    }
-
-    private fun DatabaseReference.createUser(uid: String, user: User, onSuccess: () -> Unit) {
-        val reference = child("users").child(uid)
-        reference.setValue(user).addOnCompleteListener {
-            if(it.isSuccessful) {
-                onSuccess()
-            } else {
-                unkownRegisterError(it)
-            }
-        }
-    }
-
-    private fun FirebaseAuth.fetchSignInMethodsForEmail(email: String,
-                                                        onSuccess: (List<String>) -> Unit) {
-        fetchSignInMethodsForEmail(email).addOnCompleteListener {
-            if (it.isSuccessful) {
-                onSuccess(it.result!!.signInMethods ?: emptyList())
-
-            } else {
-                showToast(it.exception!!.message!!)
-            }
-        }
     }
 
 }

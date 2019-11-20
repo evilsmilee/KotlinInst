@@ -7,11 +7,11 @@ import kotlinx.android.synthetic.main.activity_add_friends.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.setupAuthGuard
 
 class AddFriendsActivity : BaseActivity(), FriendsAdapter.Listener {
     private lateinit var mViewModel: AddFriendViewModel
     private lateinit var mUser: User
-    private lateinit var mUsers: List<User>
     private lateinit var mAdapter: FriendsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,21 +21,22 @@ class AddFriendsActivity : BaseActivity(), FriendsAdapter.Listener {
 
         mAdapter = FriendsAdapter(this)
 
-        mViewModel = initViewModel()
+        setupAuthGuard {
+            mViewModel = initViewModel()
 
-        back_image.setOnClickListener { finish() }
+            back_image.setOnClickListener { finish() }
 
-        add_friends_recycler.adapter = mAdapter
-        add_friends_recycler.layoutManager = LinearLayoutManager(this)
+            add_friends_recycler.adapter = mAdapter
+            add_friends_recycler.layoutManager = LinearLayoutManager(this)
 
-        mViewModel.usersAndFriends.observe(this, Observer {
-            it?.let { (user, otherUsers) ->
-                mUser = user
-                mUsers = otherUsers
+            mViewModel.usersAndFriends.observe(this, Observer {
+                it?.let { (user, otherUsers) ->
+                    mUser = user
 
-                mAdapter.update(mUsers, mUser.follows)
-            }
-        })
+                    mAdapter.update(otherUsers, mUser.follows)
+                }
+            })
+        }
     }
 
 

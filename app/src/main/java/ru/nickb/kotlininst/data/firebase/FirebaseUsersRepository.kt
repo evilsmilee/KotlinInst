@@ -13,8 +13,10 @@ import ru.nickb.kotlininst.data.firebase.common.*
 
 
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.showToast
 
 class FirebaseUsersRepository: UsersRepository {
+
 
      override fun updateUserProfile(currentUser: User, newUser: User): Task<Unit> {
           val updatesMap = mutableMapOf<String, Any?>()
@@ -27,10 +29,29 @@ class FirebaseUsersRepository: UsersRepository {
           return database.child("users").child(currentUid()!!).updateChildren(updatesMap).toUnit()
      }
 
+     override fun isUserExistsForEmail(email: String): Task<Boolean> =
+          auth.fetchSignInMethodsForEmail(email).onSuccessTask {
+                   val signInMethods =  it?.signInMethods ?: emptyList<String>()
+                     Tasks.forResult(signInMethods.isNotEmpty())
+               }
+
+
+     override fun createUser(user: User, password: String): Task<Unit> =
+          auth.createUserWithEmailAndPassword(user.email, password).onSuccessTask {
+               database.child("users").child(it!!.user.uid).setValue(user).toUnit()
+          }
+
+
      override fun getUsers(): LiveData<List<User>> =
           database.child("users").liveData().map{
                it.children.map { it.asUser()!! }
           }
+
+     override fun getImages(uid: String): LiveData<List<String>> =
+          FirebaseLiveData(database.child("images").child(uid)).map {
+               it.children.map { it.getValue(String::class.java)!! }
+          }
+
 
      override fun addFollow(fromUid: String, toUid: String): Task<Unit> =
           getFollowsRef(fromUid, toUid).setValue(true).toUnit()

@@ -6,12 +6,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.User
-import ru.nickb.kotlininst.screens.common.BaseActivity
-import ru.nickb.kotlininst.screens.common.loadUserPhoto
-import ru.nickb.kotlininst.screens.common.showToast
-import ru.nickb.kotlininst.screens.common.toStringOrNull
-import ru.nickb.kotlininst.screens.common.CameraHelper
-import ru.nickb.kotlininst.screens.common.PasswordDialog
+import ru.nickb.kotlininst.screens.common.*
 
 class EditProfileActivity : BaseActivity(), PasswordDialog.Listener {
 
@@ -31,21 +26,22 @@ class EditProfileActivity : BaseActivity(), PasswordDialog.Listener {
         save_image.setOnClickListener { updateProfile() }
         change_photo_text.setOnClickListener { mCamera.takeCameraPicture() }
 
+        setupAuthGuard {
+            mViewModel = initViewModel()
 
-        mViewModel = initViewModel()
-
-        mViewModel.user.observe(this, Observer {
-            it?.let {
-                mUser = it
-                name_input.setText(mUser.name)
-                username_input.setText(mUser.name)
-                website_input.setText(mUser.website)
-                bio_input.setText(mUser.bio)
-                email_input.setText(mUser.email)
-                phone_input.setText(mUser.phone?.toString())
-                profile_edit_image.loadUserPhoto(photoUrl = mUser.photo)
-            }
-        })
+            mViewModel.user.observe(this, Observer {
+                it?.let {
+                    mUser = it
+                    name_input.setText(mUser.name)
+                    username_input.setText(mUser.name)
+                    website_input.setText(mUser.website)
+                    bio_input.setText(mUser.bio)
+                    email_input.setText(mUser.email)
+                    phone_input.setText(mUser.phone?.toString())
+                    profile_edit_image.loadUserPhoto(photoUrl = mUser.photo)
+                }
+            })
+        }
     }
 
 

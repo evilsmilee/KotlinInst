@@ -27,7 +27,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     inline fun <reified T : ViewModel> initViewModel(): T = ViewModelProviders.of(this,
-        ViewModelFactory(commonViewModel)
+        ViewModelFactory(application, commonViewModel, commonViewModel)
     ).get(T::class.java)
 
     fun goToLogin() {

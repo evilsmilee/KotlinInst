@@ -7,4 +7,10 @@ class FirebaseAuthManager: AuthManager {
     override fun signOut() {
         auth.signOut()
     }
+
+    override fun signIn(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+
+        }
+    }
 }

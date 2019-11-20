@@ -5,34 +5,51 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
 import ru.nickb.kotlininst.R
+import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
+import ru.nickb.kotlininst.screens.common.setupAuthGuard
 import ru.nickb.kotlininst.screens.common.showToast
 import ru.nickb.kotlininst.screens.home.HomeActivity
 
-class LoginActivity : AppCompatActivity(),   View.OnClickListener, KeyboardVisibilityEventListener {
+class LoginActivity : BaseActivity(),   View.OnClickListener, KeyboardVisibilityEventListener {
 
 
-    private val TAG = "LoginActivity"
     private lateinit var mAuth: FirebaseAuth
-
+    private lateinit var mViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        Log.d(TAG, "onCreate")
-        coordinateBtnAndInputs(
-            login_btn,
-            email_input,
-            password_input
-        )
+        KeyboardVisibilityEvent.setEventListener(this, this)
+        coordinateBtnAndInputs(login_btn, email_input, password_input)
         login_btn.setOnClickListener(this)
-        mAuth = FirebaseAuth.getInstance()
         create_account_text.setOnClickListener(this)
+        /*setupAuthGuard {*/
+            mViewModel = initViewModel()
+            mViewModel.goToHomeScreen.observe(this, Observer {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+             })
+            mViewModel.goToRegisterScreen.observe(this, Observer {
+                startActivity(Intent(this, RegisterActivity::class.java))
+            })
+            mAuth = FirebaseAuth.getInstance()
+        /*}*/
+    }
+
+    override fun onClick(v: View) {
+        when(v.id) {
+            R.id.login_btn -> mViewModel.onLoginClick(email = email_input.text.toString(), password = password_input.text.toString())
+            R.id.create_account_text -> mViewModel.onRegisterClick()
+        }
+
     }
 
     override fun onVisibilityChanged(isKeyboardOpen: Boolean) {
@@ -41,34 +58,5 @@ class LoginActivity : AppCompatActivity(),   View.OnClickListener, KeyboardVisib
         } else {
             create_account_text.visibility = View.VISIBLE
         }
-    }
-
-
-
-    private fun validate(email: String, password: String) =
-        email.isNotEmpty() && password.isNotEmpty()
-
-
-    override fun onClick(v: View) {
-        when(v.id) {
-            R.id.login_btn -> {
-                val email = email_input.text.toString()
-                val password = password_input.text.toString()
-                if(validate(email, password)) {
-                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                        if(it.isSuccessful) {
-                            startActivity(Intent(this, HomeActivity::class.java))
-                            finish()
-                        }
-                    }
-                } else {
-                    showToast(getString(R.string.please_enter_pwd))
-                }
-            }
-            R.id.create_account_text -> {
-                startActivity(Intent(this, RegisterActivity::class.java))
-            }
-        }
-
     }
 }
