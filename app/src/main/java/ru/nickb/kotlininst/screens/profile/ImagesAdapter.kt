@@ -1,4 +1,4 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.profile
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

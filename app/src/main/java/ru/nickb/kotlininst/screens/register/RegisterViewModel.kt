@@ -1,4 +1,4 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.register
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

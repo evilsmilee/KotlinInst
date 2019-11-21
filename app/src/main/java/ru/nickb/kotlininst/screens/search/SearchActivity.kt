@@ -1,4 +1,4 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.search
 
 import android.os.Bundle
 import ru.nickb.kotlininst.R
@@ -6,13 +6,12 @@ import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.setupAuthGuard
 import ru.nickb.kotlininst.screens.common.setupBottomNavigation
 
-class LikesActivity : BaseActivity() {
+class SearchActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        setupBottomNavigation(3)
+        setupBottomNavigation(1)
         setupAuthGuard {  }
     }
-
 }

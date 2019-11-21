@@ -1,4 +1,4 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.register
 
 
 
@@ -18,7 +18,9 @@ import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
 import ru.nickb.kotlininst.screens.home.HomeActivity
 
-class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragment.Listener{
+class RegisterActivity : BaseActivity(),
+    EmailFragment.Listener,
+    NamePassFragment.Listener {
      private lateinit var mViewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +29,9 @@ class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragmen
 
         mViewModel = initViewModel()
         mViewModel.goToNamePassScreen.observe(this, Observer {
-            supportFragmentManager.beginTransaction().replace(R.id.frame_layout, NamePassFragment())
+            supportFragmentManager.beginTransaction().replace(R.id.frame_layout,
+                NamePassFragment()
+            )
                 .addToBackStack(null)
                 .commit()
         })
@@ -38,7 +42,9 @@ class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragmen
             supportFragmentManager.popBackStack()
         })
         if(savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().add(R.id.frame_layout, EmailFragment()).commit()
+            supportFragmentManager.beginTransaction().add(R.id.frame_layout,
+                EmailFragment()
+            ).commit()
         }
     }
 

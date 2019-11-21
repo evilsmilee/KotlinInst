@@ -7,10 +7,10 @@ import com.google.android.gms.tasks.OnFailureListener
 import ru.nickb.kotlininst.common.firebase.FirebaseAuthManager
 import ru.nickb.kotlininst.data.FirebaseUsersRepository
 import ru.nickb.kotlininst.data.firebase.FirebaseFeedPostsRepository
-import ru.nickb.kotlininst.screens.LoginViewModel
-import ru.nickb.kotlininst.screens.ProfileViewModel
-import ru.nickb.kotlininst.screens.RegisterViewModel
-import ru.nickb.kotlininst.screens.ShareViewModel
+import ru.nickb.kotlininst.screens.login.LoginViewModel
+import ru.nickb.kotlininst.screens.profile.ProfileViewModel
+import ru.nickb.kotlininst.screens.register.RegisterViewModel
+import ru.nickb.kotlininst.screens.share.ShareViewModel
 import ru.nickb.kotlininst.screens.addfriends.AddFriendViewModel
 import ru.nickb.kotlininst.screens.editprofile.EditProfileViewModel
 import ru.nickb.kotlininst.screens.home.HomeViewModel
@@ -36,13 +36,25 @@ class ViewModelFactory(
         } else if (modelClass.isAssignableFrom(ProfileSettingsViewModel::class.java)) {
             return ProfileSettingsViewModel(authManager) as T
         } else if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(authManager, app, commonViewModel, onFailureListener) as T
+            return LoginViewModel(
+                authManager,
+                app,
+                commonViewModel,
+                onFailureListener
+            ) as T
         } else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             return ProfileViewModel(usersRepo) as T
         } else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-            return RegisterViewModel(commonViewModel, app, usersRepo) as T
+            return RegisterViewModel(
+                commonViewModel,
+                app,
+                usersRepo
+            ) as T
         } else if (modelClass.isAssignableFrom(ShareViewModel::class.java)) {
-            return ShareViewModel(usersRepo, onFailureListener) as T
+            return ShareViewModel(
+                usersRepo,
+                onFailureListener
+            ) as T
         } else {
             error("Unknown view model class $modelClass")
         }

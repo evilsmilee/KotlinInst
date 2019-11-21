@@ -1,4 +1,4 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.login
 
 
 

@@ -1,9 +1,7 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.login
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
@@ -12,10 +10,9 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
 import ru.nickb.kotlininst.R
+import ru.nickb.kotlininst.screens.register.RegisterActivity
 import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
-import ru.nickb.kotlininst.screens.common.setupAuthGuard
-import ru.nickb.kotlininst.screens.common.showToast
 import ru.nickb.kotlininst.screens.home.HomeActivity
 
 class LoginActivity : BaseActivity(),   View.OnClickListener, KeyboardVisibilityEventListener {

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import ru.nickb.kotlininst.screens.LoginActivity
+import ru.nickb.kotlininst.screens.login.LoginActivity
 
 
 abstract class BaseActivity : AppCompatActivity() {

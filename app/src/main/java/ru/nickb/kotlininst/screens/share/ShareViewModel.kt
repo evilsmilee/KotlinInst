@@ -1,4 +1,4 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.share
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel

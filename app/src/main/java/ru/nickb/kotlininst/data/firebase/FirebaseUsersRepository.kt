@@ -1,7 +1,6 @@
 package ru.nickb.kotlininst.data
 
 import android.net.Uri
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
@@ -15,8 +14,6 @@ import ru.nickb.kotlininst.models.FeedPost
 
 
 import ru.nickb.kotlininst.models.User
-import ru.nickb.kotlininst.screens.ProfileActivity
-import ru.nickb.kotlininst.screens.common.showToast
 
 class FirebaseUsersRepository: UsersRepository {
 

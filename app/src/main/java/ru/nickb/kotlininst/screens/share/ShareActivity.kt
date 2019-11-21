@@ -1,18 +1,17 @@
-package ru.nickb.kotlininst.screens
+package ru.nickb.kotlininst.screens.share
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_share.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.data.firebase.common.FirebaseHelper
-import ru.nickb.kotlininst.models.FeedPost
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.CameraHelper
 import ru.nickb.kotlininst.screens.common.loadImage
 import ru.nickb.kotlininst.screens.common.setupAuthGuard
+import ru.nickb.kotlininst.screens.profile.ProfileActivity
 
 class ShareActivity : BaseActivity() {
 

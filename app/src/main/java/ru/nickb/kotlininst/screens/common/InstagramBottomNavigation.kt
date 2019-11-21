@@ -9,8 +9,11 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 import ru.nickb.kotlininst.R
-import ru.nickb.kotlininst.screens.*
 import ru.nickb.kotlininst.screens.home.HomeActivity
+import ru.nickb.kotlininst.screens.likes.LikesActivity
+import ru.nickb.kotlininst.screens.profile.ProfileActivity
+import ru.nickb.kotlininst.screens.search.SearchActivity
+import ru.nickb.kotlininst.screens.share.ShareActivity
 
 class InstagramBottomNavigation (private val bnv: BottomNavigationViewEx, private val navNumber: Int,
                                  activity: Activity): LifecycleObserver {
