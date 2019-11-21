@@ -1,13 +1,12 @@
 package ru.nickb.kotlininst.screens
 
-import SingleLiveEvent
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.alexbezhan.instagram.common.SingleLiveEvent
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.data.UsersRepository
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.screens.common.CommonViewModel
-import ru.nickb.kotlininst.screens.common.showToast
 
 class RegisterViewModel(
     private val commonViewModel: CommonViewModel,

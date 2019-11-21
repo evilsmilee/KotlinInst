@@ -3,6 +3,7 @@ package ru.nickb.kotlininst.data
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.google.android.gms.tasks.Task
+import ru.nickb.kotlininst.models.FeedPost
 import ru.nickb.kotlininst.models.User
 
 interface UsersRepository {
@@ -20,6 +21,8 @@ interface UsersRepository {
      fun getImages(uid: String): LiveData<List<String>>
      fun isUserExistsForEmail(email: String): Task<Boolean>
      fun createUser(user: User, password: String): Task<Unit>
-
+     fun uploadUserImage(uid: String, imageUri:Uri): Task<Uri>
+     fun setUserImage(uid: String, downloadUri: Uri): Task<Unit>
+     fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit>
 
 }

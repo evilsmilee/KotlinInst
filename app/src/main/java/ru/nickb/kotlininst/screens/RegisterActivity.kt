@@ -3,28 +3,19 @@ package ru.nickb.kotlininst.screens
 
 
 
-import androidx.fragment.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_register_email.*
 import kotlinx.android.synthetic.main.fragment_register_namepass.*
 import ru.nickb.kotlininst.R
-import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
-import ru.nickb.kotlininst.screens.common.showToast
 import ru.nickb.kotlininst.screens.home.HomeActivity
 
 class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragment.Listener{

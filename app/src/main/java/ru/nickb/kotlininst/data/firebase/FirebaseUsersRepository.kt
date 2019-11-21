@@ -1,6 +1,7 @@
 package ru.nickb.kotlininst.data
 
 import android.net.Uri
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
@@ -10,9 +11,11 @@ import ru.nickb.kotlininst.common.task
 import ru.nickb.kotlininst.common.toUnit
 import ru.nickb.kotlininst.data.common.map
 import ru.nickb.kotlininst.data.firebase.common.*
+import ru.nickb.kotlininst.models.FeedPost
 
 
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.ProfileActivity
 import ru.nickb.kotlininst.screens.common.showToast
 
 class FirebaseUsersRepository: UsersRepository {
@@ -28,6 +31,32 @@ class FirebaseUsersRepository: UsersRepository {
           if(newUser.phone != currentUser.phone) updatesMap["phone"] = newUser.phone
           return database.child("users").child(currentUid()!!).updateChildren(updatesMap).toUnit()
      }
+
+     override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> =
+          database.child("feed-posts").child(uid)
+               .push().setValue(feedPost).toUnit()
+
+
+     override fun setUserImage(uid: String, downloadUri: Uri): Task<Unit> =
+          database.child("images").child(uid).push()
+               .setValue(downloadUri.toString()).toUnit()
+
+
+
+     override fun uploadUserImage(uid: String, imageUri: Uri): Task<Uri> =
+          task {taskSource ->
+               storage.child("users").child(uid).child("images")
+                    .child(imageUri.lastPathSegment!!).putFile(imageUri).addOnCompleteListener {
+                         if (it.isSuccessful) {
+                              taskSource.setResult(it.result?.uploadSessionUri)
+                         } else {
+                              taskSource.setException(it.exception!!)
+                         }
+                    }
+          }
+
+
+
 
      override fun isUserExistsForEmail(email: String): Task<Boolean> =
           auth.fetchSignInMethodsForEmail(email).onSuccessTask {

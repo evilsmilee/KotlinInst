@@ -1,9 +1,11 @@
 package ru.nickb.kotlininst.screens
 
-import SingleLiveEvent
+
+
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.alexbezhan.instagram.common.SingleLiveEvent
 import com.google.android.gms.tasks.OnFailureListener
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.common.AuthManager
