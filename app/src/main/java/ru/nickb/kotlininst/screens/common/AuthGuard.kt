@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.google.firebase.auth.FirebaseAuth
 import ru.nickb.kotlininst.data.firebase.common.auth
+import ru.nickb.kotlininst.data.firebase.common.database
 
 class AuthGuard(private val activity: BaseActivity, f: (String) -> Unit): LifecycleObserver {
     init {

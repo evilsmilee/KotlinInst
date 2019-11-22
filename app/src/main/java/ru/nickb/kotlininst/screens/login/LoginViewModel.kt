@@ -9,14 +9,15 @@ import com.alexbezhan.instagram.common.SingleLiveEvent
 import com.google.android.gms.tasks.OnFailureListener
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.common.AuthManager
+import ru.nickb.kotlininst.screens.common.BaseViewModel
 import ru.nickb.kotlininst.screens.common.CommonViewModel
 
 class LoginViewModel(
     private val authManager: AuthManager,
     private val app: Application,
     private val commonViewModel: CommonViewModel,
-    private val onFailureListener: OnFailureListener
-) : ViewModel() {
+    onFailureListener: OnFailureListener
+) : BaseViewModel(onFailureListener) {
     private val _goToHomeScreen = SingleLiveEvent<Unit>()
     val goToHomeScreen: LiveData<Unit> = _goToHomeScreen
     private val _goToRegisterScreen = SingleLiveEvent<Unit>()

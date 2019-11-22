@@ -2,16 +2,20 @@ package ru.nickb.kotlininst.screens.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.alexbezhan.instagram.common.SingleLiveEvent
 import com.google.android.gms.tasks.OnFailureListener
 import ru.nickb.kotlininst.data.common.map
 import ru.nickb.kotlininst.data.firebase.FirebaseFeedPostsRepository
 import ru.nickb.kotlininst.models.FeedPost
+import ru.nickb.kotlininst.screens.common.BaseViewModel
 
-class HomeViewModel(private val onFailureListener: OnFailureListener,
-    private val feedPostsRepo: FirebaseFeedPostsRepository): ViewModel() {
+class HomeViewModel(onFailureListener: OnFailureListener,
+    private val feedPostsRepo: FirebaseFeedPostsRepository): BaseViewModel(onFailureListener) {
     lateinit var uid: String
     lateinit var feedPosts: LiveData<List<FeedPost>>
     private var loadedLikes = mapOf<String, LiveData<FeedPostLikes>>()
+    private val _goToCommentScreen = SingleLiveEvent<String>()
+    val goToCommentScreen = _goToCommentScreen
 
     fun init(uid: String) {
         this.uid = uid
@@ -40,6 +44,10 @@ class HomeViewModel(private val onFailureListener: OnFailureListener,
         } else {
             return existingLoadedLikes!!
         }
+    }
+
+    fun openComments(postId: String) {
+        _goToCommentScreen.value = postId
     }
 
 }

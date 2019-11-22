@@ -7,9 +7,10 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
 import ru.nickb.kotlininst.data.UsersRepository
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.BaseViewModel
 
-class EditProfileViewModel(private val onFailureListener: OnFailureListener,
-                           private val usersRepo: UsersRepository): ViewModel() {
+class EditProfileViewModel(onFailureListener: OnFailureListener,
+                           private val usersRepo: UsersRepository): BaseViewModel(onFailureListener) {
     val user: LiveData<User> = usersRepo.getUser()
 
     fun uploadAndSetUserPhoto(localImage: Uri): Task<Unit> =

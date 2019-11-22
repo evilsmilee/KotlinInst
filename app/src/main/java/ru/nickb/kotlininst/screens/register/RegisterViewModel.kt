@@ -3,16 +3,19 @@ package ru.nickb.kotlininst.screens.register
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.alexbezhan.instagram.common.SingleLiveEvent
+import com.google.android.gms.tasks.OnFailureListener
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.data.UsersRepository
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.BaseViewModel
 import ru.nickb.kotlininst.screens.common.CommonViewModel
 
 class RegisterViewModel(
     private val commonViewModel: CommonViewModel,
     private val app: Application,
-    private val usersRepo: UsersRepository
-) : ViewModel() {
+    private val usersRepo: UsersRepository,
+    onFailureListener: OnFailureListener
+) : BaseViewModel(onFailureListener) {
     private var email: String? = null
     private val _goToNamePassScreen = SingleLiveEvent<Unit>()
     private val _goToHomeScreen = SingleLiveEvent<Unit>()
@@ -29,7 +32,7 @@ class RegisterViewModel(
                 } else {
                     commonViewModel.setErrorMessage(app.getString(R.string.email_already_exists))
                 }
-            }
+            }.addOnFailureListener(onFailureListener)
         } else {
             commonViewModel.setErrorMessage(app.getString(R.string.enter_email))
         }
@@ -41,7 +44,7 @@ class RegisterViewModel(
             if(localEmail != null) {
                 usersRepo.createUser(mkUser(fullName, localEmail), password).addOnSuccessListener {
                     _goToHomeScreen.call()
-                }
+                }.addOnFailureListener(onFailureListener)
 
             } else {
                 commonViewModel.setErrorMessage(app.getString(R.string.enter_fullname_or_pwd))

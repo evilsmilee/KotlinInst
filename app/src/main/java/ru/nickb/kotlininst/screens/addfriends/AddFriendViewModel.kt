@@ -9,10 +9,11 @@ import ru.nickb.kotlininst.data.FeedPostsRepository
 import ru.nickb.kotlininst.data.UsersRepository
 import ru.nickb.kotlininst.data.common.map
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.BaseViewModel
 
-class AddFriendViewModel(private val onFailureListener: OnFailureListener,
+class AddFriendViewModel(onFailureListener: OnFailureListener,
                          private val usersRepo: UsersRepository,
-                         private val feedPostsRepo: FeedPostsRepository) : ViewModel() {
+                         private val feedPostsRepo: FeedPostsRepository) : BaseViewModel(onFailureListener) {
 
     val usersAndFriends: LiveData<Pair<User, List<User>>> =
         usersRepo.getUsers()

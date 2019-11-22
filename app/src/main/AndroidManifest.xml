@@ -35,6 +35,7 @@
         <activity android:name=".screens.profile.ProfileActivity"/>
         <activity android:name=".screens.profilesettings.ProfileSettingsActivity"/>
         <activity android:name=".screens.addfriends.AddFriendsActivity"/>
+        <activity android:name=".screens.comments.CommentsActivity"/>
         <activity
                 android:name=".screens.login.LoginActivity"
                 android:windowSoftInputMode="stateVisible|adjustResize"/>

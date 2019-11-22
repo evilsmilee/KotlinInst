@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_home.*
 import ru.nickb.kotlininst.R
+import ru.nickb.kotlininst.screens.comments.CommentsActivity
 import ru.nickb.kotlininst.screens.common.BaseActivity
 import ru.nickb.kotlininst.screens.common.setupAuthGuard
 import ru.nickb.kotlininst.screens.common.setupBottomNavigation
@@ -28,9 +29,12 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
             mViewModel.feedPosts.observe(this, Observer{it?.let{
                 mAdapter.updatePosts(it)
             }})
+            mViewModel.goToCommentScreen.observe(this, Observer { it?.let {
+                postId ->
+                CommentsActivity.start(this, postId)
+            } })
         }
     }
-
 
     override fun toggleLike(postId: String) {
         mViewModel.toggleLike(postId)
@@ -43,6 +47,10 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
             } })
         }
 
+    }
+
+    override fun openComments(postId: String) {
+       mViewModel.openComments(postId)
     }
 
 }

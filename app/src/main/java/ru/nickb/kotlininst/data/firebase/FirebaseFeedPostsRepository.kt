@@ -10,9 +10,10 @@ import ru.nickb.kotlininst.data.FeedPostLike
 import ru.nickb.kotlininst.data.FeedPostsRepository
 import ru.nickb.kotlininst.data.common.map
 import ru.nickb.kotlininst.data.firebase.common.*
+import ru.nickb.kotlininst.models.Comment
 import ru.nickb.kotlininst.models.FeedPost
 
-class FirebaseFeedPostsRepository: FeedPostsRepository {
+class FirebaseFeedPostsRepository : FeedPostsRepository {
 
 
     override fun getLikes(postId: String): LiveData<List<FeedPostLike>> =
@@ -20,10 +21,18 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
             it.children.map { FeedPostLike(it.key) }
         }
 
+    override fun getComments(postId: String): LiveData<List<Comment>> =
+        FirebaseLiveData(database.child("comments").child(postId)).map {
+            it.children.map { it.asComment()!! }
+        }
+
+    override fun createComment(postId: String, comment: Comment): Task<Unit> =
+        database.child("comments").child(postId).push().setValue(comment).toUnit()
+
 
     override fun toggleLike(postId: String, uid: String): Task<Unit> {
         val reference = database.child("likes").child(postId).child(uid)
-        return task {taskSource ->
+        return task { taskSource ->
             reference.addListenerForSingleValueEvent(ValueEventListenerAdapter {
                 reference.setValueTrueOrRemove(!it.exists())
                 taskSource.setResult(Unit)
@@ -34,10 +43,9 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
 
 
     override fun getFeedPosts(uid: String): LiveData<List<FeedPost>> =
-       FirebaseLiveData(database.child("feed-posts").child(uid)).map {
-           it.children.map { it.asFeedPost()!! }
-       }
-
+        FirebaseLiveData(database.child("feed-posts").child(uid)).map {
+            it.children.map { it.asFeedPost()!! }
+        }
 
 
     override fun copyFeedPosts(postsAuthorUid: String, uid: String): Task<Unit> =
@@ -77,9 +85,6 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
 
                 })
         }
-
-
-
 
 
 }

@@ -12,6 +12,7 @@ import ru.nickb.kotlininst.screens.profile.ProfileViewModel
 import ru.nickb.kotlininst.screens.register.RegisterViewModel
 import ru.nickb.kotlininst.screens.share.ShareViewModel
 import ru.nickb.kotlininst.screens.addfriends.AddFriendViewModel
+import ru.nickb.kotlininst.screens.comments.CommentsViewModel
 import ru.nickb.kotlininst.screens.editprofile.EditProfileViewModel
 import ru.nickb.kotlininst.screens.home.HomeViewModel
 import ru.nickb.kotlininst.screens.profilesettings.ProfileSettingsViewModel
@@ -34,7 +35,7 @@ class ViewModelFactory(
         } else if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(onFailureListener, feedPostsRepo) as T
         } else if (modelClass.isAssignableFrom(ProfileSettingsViewModel::class.java)) {
-            return ProfileSettingsViewModel(authManager) as T
+            return ProfileSettingsViewModel(authManager, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(
                 authManager,
@@ -43,19 +44,22 @@ class ViewModelFactory(
                 onFailureListener
             ) as T
         } else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(usersRepo) as T
+            return ProfileViewModel(usersRepo, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
             return RegisterViewModel(
                 commonViewModel,
                 app,
-                usersRepo
+                usersRepo,
+                onFailureListener
             ) as T
         } else if (modelClass.isAssignableFrom(ShareViewModel::class.java)) {
             return ShareViewModel(
                 usersRepo,
                 onFailureListener
             ) as T
-        } else {
+        } else if (modelClass.isAssignableFrom(CommentsViewModel::class.java)) {
+             return CommentsViewModel(feedPostsRepo, onFailureListener, usersRepo) as T
+        }   else {
             error("Unknown view model class $modelClass")
         }
     }

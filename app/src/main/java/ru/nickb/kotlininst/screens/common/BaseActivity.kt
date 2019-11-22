@@ -14,10 +14,10 @@ import ru.nickb.kotlininst.screens.login.LoginActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    lateinit var commonViewModel: CommonViewModel
+   protected lateinit var commonViewModel: CommonViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         commonViewModel = ViewModelProviders.of(this).get(CommonViewModel::class.java)
         commonViewModel.errorMessage.observe(this, Observer { it.let {
@@ -26,7 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
         })
     }
 
-    inline fun <reified T : ViewModel> initViewModel(): T = ViewModelProviders.of(this,
+    protected inline fun <reified T : BaseViewModel> initViewModel(): T = ViewModelProviders.of(this,
         ViewModelFactory(application, commonViewModel, commonViewModel)
     ).get(T::class.java)
 

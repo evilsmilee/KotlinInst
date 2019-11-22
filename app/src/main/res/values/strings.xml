@@ -42,6 +42,9 @@
     <string name="email_already_exists">This email already exists</string>
     <string name="enter_fullname_or_pwd">Please enter full name and password</string>
     <string name="something_wrong">Something wrong happened. Please try again leter</string>
+    <string name="comments">Comments</string>
+    <string name="post">Post</string>
+    <string name="add_a_comment">Add a comment…</string>
 
     <plurals name="likes_count">
       <item quantity="one">%d like</item>

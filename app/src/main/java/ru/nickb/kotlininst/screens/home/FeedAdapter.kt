@@ -16,10 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.feed_item.view.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.FeedPost
-import ru.nickb.kotlininst.screens.common.SimpleCallback
-import ru.nickb.kotlininst.screens.common.loadImage
-import ru.nickb.kotlininst.screens.common.loadUserPhoto
-import ru.nickb.kotlininst.screens.common.showToast
+import ru.nickb.kotlininst.screens.common.*
 
 class FeedAdapter(private val listener: Listener)
     : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
@@ -33,6 +30,7 @@ class FeedAdapter(private val listener: Listener)
     interface Listener{
         fun toggleLike(postId: String)
         fun loadLikes(postId: String, position: Int)
+        fun openComments(postId: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,33 +62,18 @@ class FeedAdapter(private val listener: Listener)
                likes_text.text = likesCountText
            }
             caption_text.setCaptionText(post.username, post.caption)
-            like_image.setOnClickListener { listener.toggleLike(post.id) }
+            like_image.setOnClickListener { listener.toggleLike(post.id!!) }
             like_image.setImageResource(
                 if(likes.likedByUser)
                     R.drawable.ic_likes_active
             else R.drawable.ic_likes_border
             )
-            listener.loadLikes(post.id, position)
+            comment_image.setOnClickListener { listener.openComments(post.id!!) }
+            listener.loadLikes(post.id!!, position)
         }
     }
 
-    private fun TextView.setCaptionText(username: String, caption: String) {
-        val usernameSpannable = SpannableString(username)
-        usernameSpannable.setSpan(
-            StyleSpan(Typeface.BOLD), 0, usernameSpannable.length,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
-        usernameSpannable.setSpan(object: ClickableSpan() {
-            override fun onClick(widget: View) {
-                widget.context.showToast(context.getString(R.string.user_name_is_clicked))
-            }
-            override fun updateDrawState(ds: TextPaint?) {}
-        }, 0, usernameSpannable.length,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-      text = SpannableStringBuilder().append(usernameSpannable).append(" ")
-            .append(caption)
-       movementMethod = LinkMovementMethod.getInstance()
-    }
 
     override fun getItemCount() = posts.size
 
@@ -99,7 +82,7 @@ class FeedAdapter(private val listener: Listener)
            SimpleCallback(
                this.posts,
                posts
-           ) { it.id })
+           ) { it.id!! })
         this.posts = newPosts
         diffResult.dispatchUpdatesTo(this)
     }

@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import ru.nickb.kotlininst.models.Comment
 import ru.nickb.kotlininst.models.FeedPost
 import ru.nickb.kotlininst.models.User
 
@@ -21,11 +22,14 @@ val database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
 fun currentUid(): String? = auth.currentUser?.uid
 
+fun DataSnapshot.asComment(): Comment? =
+    getValue(Comment::class.java)?.copy(id = key)
+
 fun DataSnapshot.asUser(): User? =
-    key?.let { getValue(User::class.java)?.copy(uid = it) }
+   getValue(User::class.java)?.copy(uid = key!!)
 
 fun DataSnapshot.asFeedPost(): FeedPost? =
-    key?.let { getValue(FeedPost::class.java)?.copy(id = it) }
+     getValue(FeedPost::class.java)?.copy(id = key)
 
 fun DatabaseReference.setValueTrueOrRemove(value: Boolean): Task<Void> =
     if (value) setValue(true) else removeValue()

@@ -12,7 +12,9 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.screens.register.RegisterActivity
 import ru.nickb.kotlininst.screens.common.BaseActivity
+import ru.nickb.kotlininst.screens.common.CommonViewModel
 import ru.nickb.kotlininst.screens.common.coordinateBtnAndInputs
+import ru.nickb.kotlininst.screens.common.setupAuthGuard
 import ru.nickb.kotlininst.screens.home.HomeActivity
 
 class LoginActivity : BaseActivity(),   View.OnClickListener, KeyboardVisibilityEventListener {
@@ -20,6 +22,8 @@ class LoginActivity : BaseActivity(),   View.OnClickListener, KeyboardVisibility
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mViewModel: LoginViewModel
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

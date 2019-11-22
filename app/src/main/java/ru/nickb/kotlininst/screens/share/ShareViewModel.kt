@@ -7,9 +7,10 @@ import com.google.android.gms.tasks.Tasks
 import ru.nickb.kotlininst.data.UsersRepository
 import ru.nickb.kotlininst.models.FeedPost
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.BaseViewModel
 
 class ShareViewModel(private val usersRepo: UsersRepository,
-                     private val onFailureListener: OnFailureListener): ViewModel() {
+                    onFailureListener: OnFailureListener): BaseViewModel(onFailureListener) {
     val  user = usersRepo.getUser()
 
     fun share(user: User, imageUri: Uri?, caption: String) {
