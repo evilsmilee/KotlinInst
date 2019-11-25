@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import ru.nickb.kotlininst.common.firebase.FirebaseAuthManager
 import ru.nickb.kotlininst.data.FirebaseUsersRepository
 import ru.nickb.kotlininst.data.firebase.FirebaseFeedPostsRepository
+import ru.nickb.kotlininst.screens.InstagramApp
 import ru.nickb.kotlininst.screens.login.LoginViewModel
 import ru.nickb.kotlininst.screens.profile.ProfileViewModel
 import ru.nickb.kotlininst.screens.register.RegisterViewModel
@@ -19,14 +20,14 @@ import ru.nickb.kotlininst.screens.profilesettings.ProfileSettingsViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(
-    private val app: Application,
+    private val app: InstagramApp,
     private val commonViewModel: CommonViewModel,
     private val onFailureListener: OnFailureListener
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        val usersRepo by lazy { FirebaseUsersRepository() }
-        val feedPostsRepo by lazy { FirebaseFeedPostsRepository() }
-        val authManager by lazy { FirebaseAuthManager() }
+        val usersRepo = app.usersRepo
+        val feedPostsRepo = app.feedPostsRepo
+        val authManager = app.authManager
 
         if (modelClass.isAssignableFrom(AddFriendViewModel::class.java)) {
             return AddFriendViewModel(onFailureListener, usersRepo, feedPostsRepo) as T
@@ -55,6 +56,7 @@ class ViewModelFactory(
         } else if (modelClass.isAssignableFrom(ShareViewModel::class.java)) {
             return ShareViewModel(
                 usersRepo,
+                feedPostsRepo,
                 onFailureListener
             ) as T
         } else if (modelClass.isAssignableFrom(CommentsViewModel::class.java)) {

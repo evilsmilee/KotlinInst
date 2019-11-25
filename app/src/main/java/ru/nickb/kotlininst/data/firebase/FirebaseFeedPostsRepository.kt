@@ -26,6 +26,10 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
             it.children.map { it.asComment()!! }
         }
 
+    override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> =
+        database.child("feed-posts").child(uid)
+            .push().setValue(feedPost).toUnit()
+
     override fun createComment(postId: String, comment: Comment): Task<Unit> =
         database.child("comments").child(postId).push().setValue(comment).toUnit()
 

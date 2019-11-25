@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import ru.nickb.kotlininst.screens.InstagramApp
 import ru.nickb.kotlininst.screens.login.LoginActivity
 
 
@@ -26,8 +27,11 @@ abstract class BaseActivity : AppCompatActivity() {
         })
     }
 
-    protected inline fun <reified T : BaseViewModel> initViewModel(): T = ViewModelProviders.of(this,
-        ViewModelFactory(application, commonViewModel, commonViewModel)
+    protected inline fun <reified T : BaseViewModel> initViewModel(): T =
+        ViewModelProviders.of(this, ViewModelFactory(
+            application as InstagramApp,
+            commonViewModel,
+            commonViewModel)
     ).get(T::class.java)
 
     fun goToLogin() {

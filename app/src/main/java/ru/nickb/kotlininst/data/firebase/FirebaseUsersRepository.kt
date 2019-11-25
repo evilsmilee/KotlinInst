@@ -29,9 +29,6 @@ class FirebaseUsersRepository: UsersRepository {
           return database.child("users").child(currentUid()!!).updateChildren(updatesMap).toUnit()
      }
 
-     override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> =
-          database.child("feed-posts").child(uid)
-               .push().setValue(feedPost).toUnit()
 
 
      override fun setUserImage(uid: String, downloadUri: Uri): Task<Unit> =

@@ -32,7 +32,6 @@ class LoginActivity : BaseActivity(),   View.OnClickListener, KeyboardVisibility
         coordinateBtnAndInputs(login_btn, email_input, password_input)
         login_btn.setOnClickListener(this)
         create_account_text.setOnClickListener(this)
-        /*setupAuthGuard {*/
             mViewModel = initViewModel()
             mViewModel.goToHomeScreen.observe(this, Observer {
                 startActivity(Intent(this, HomeActivity::class.java))
@@ -42,7 +41,6 @@ class LoginActivity : BaseActivity(),   View.OnClickListener, KeyboardVisibility
                 startActivity(Intent(this, RegisterActivity::class.java))
             })
             mAuth = FirebaseAuth.getInstance()
-        /*}*/
     }
 
     override fun onClick(v: View) {

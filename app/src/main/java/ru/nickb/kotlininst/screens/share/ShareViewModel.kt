@@ -4,12 +4,14 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Tasks
+import ru.nickb.kotlininst.data.FeedPostsRepository
 import ru.nickb.kotlininst.data.UsersRepository
 import ru.nickb.kotlininst.models.FeedPost
 import ru.nickb.kotlininst.models.User
 import ru.nickb.kotlininst.screens.common.BaseViewModel
 
 class ShareViewModel(private val usersRepo: UsersRepository,
+                     private val feedPostsRepo: FeedPostsRepository,
                     onFailureListener: OnFailureListener): BaseViewModel(onFailureListener) {
     val  user = usersRepo.getUser()
 
@@ -18,7 +20,7 @@ class ShareViewModel(private val usersRepo: UsersRepository,
             usersRepo.uploadUserImage(user.uid, imageUri).onSuccessTask { downloadUrl ->
                 Tasks.whenAll(
                     usersRepo.setUserImage(user.uid, downloadUrl!!),
-                    usersRepo.createFeedPost(user.uid, mkFeedPost(user, caption, downloadUrl))
+                    feedPostsRepo.createFeedPost(user.uid, mkFeedPost(user, caption, downloadUrl))
                 )
             }.addOnFailureListener(onFailureListener)
         }
