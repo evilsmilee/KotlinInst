@@ -10,7 +10,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.screens.home.HomeActivity
-import ru.nickb.kotlininst.screens.likes.LikesActivity
+import ru.nickb.kotlininst.screens.notifications.NotificationsActivity
 import ru.nickb.kotlininst.screens.profile.ProfileActivity
 import ru.nickb.kotlininst.screens.search.SearchActivity
 import ru.nickb.kotlininst.screens.share.ShareActivity
@@ -38,7 +38,7 @@ class InstagramBottomNavigation (private val bnv: BottomNavigationViewEx, privat
                     R.id.nav_item_home -> HomeActivity::class.java
                     R.id.nav_item_search -> SearchActivity::class.java
                     R.id.nav_item_share -> ShareActivity::class.java
-                    R.id.nav_item_likes -> LikesActivity::class.java
+                    R.id.nav_item_likes -> NotificationsActivity::class.java
                     R.id.nav_item_profile -> ProfileActivity::class.java
                     else -> {
                         Log.e("unknown", "error $it")

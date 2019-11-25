@@ -16,6 +16,7 @@ import ru.nickb.kotlininst.screens.addfriends.AddFriendViewModel
 import ru.nickb.kotlininst.screens.comments.CommentsViewModel
 import ru.nickb.kotlininst.screens.editprofile.EditProfileViewModel
 import ru.nickb.kotlininst.screens.home.HomeViewModel
+import ru.nickb.kotlininst.screens.notifications.NotificationsViewModel
 import ru.nickb.kotlininst.screens.profilesettings.ProfileSettingsViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -28,7 +29,7 @@ class ViewModelFactory(
         val usersRepo = app.usersRepo
         val feedPostsRepo = app.feedPostsRepo
         val authManager = app.authManager
-
+        val notificationsRepo = app.notificationsRepo
         if (modelClass.isAssignableFrom(AddFriendViewModel::class.java)) {
             return AddFriendViewModel(onFailureListener, usersRepo, feedPostsRepo) as T
         } else if (modelClass.isAssignableFrom(EditProfileViewModel::class.java)) {
@@ -61,7 +62,10 @@ class ViewModelFactory(
             ) as T
         } else if (modelClass.isAssignableFrom(CommentsViewModel::class.java)) {
              return CommentsViewModel(feedPostsRepo, onFailureListener, usersRepo) as T
-        }   else {
+        } else if (modelClass.isAssignableFrom(NotificationsViewModel::class.java)) {
+              return NotificationsViewModel(notificationsRepo, onFailureListener) as T
+        } else
+         {
             error("Unknown view model class $modelClass")
         }
     }

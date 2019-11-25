@@ -6,6 +6,9 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import ru.nickb.kotlininst.common.Event
+import ru.nickb.kotlininst.common.EventBus
 import ru.nickb.kotlininst.common.task
 import ru.nickb.kotlininst.common.toUnit
 import ru.nickb.kotlininst.data.common.map
@@ -70,6 +73,10 @@ class FirebaseUsersRepository: UsersRepository {
                it.children.map { it.asUser()!! }
           }
 
+     override fun currentUid(): String? =
+          FirebaseAuth.getInstance().currentUser?.uid
+
+
      override fun getImages(uid: String): LiveData<List<String>> =
           FirebaseLiveData(database.child("images").child(uid)).map {
                it.children.map { it.getValue(String::class.java)!! }
@@ -78,6 +85,9 @@ class FirebaseUsersRepository: UsersRepository {
 
      override fun addFollow(fromUid: String, toUid: String): Task<Unit> =
           getFollowsRef(fromUid, toUid).setValue(true).toUnit()
+               .addOnSuccessListener {
+                    EventBus.publish(Event.CreateFollow(fromUid, toUid))
+               }
 
 
      override fun deleteFollow(fromUid: String, toUid: String): Task<Unit> =
@@ -120,17 +130,21 @@ class FirebaseUsersRepository: UsersRepository {
           database.child("users/${currentUid()!!}/photo").setValue(downloadUrl.toString()).toUnit()
 
 
-     override fun getUser(): LiveData<User> =
-          database.child("users").child(currentUid()!!).liveData().map {
+     override fun getUser(): LiveData<User> = getUser(currentUid()!!)
+
+     override fun getUser(uid: String): LiveData<User> =
+          database.child("users").child(uid).liveData().map {
                it.asUser()!!
           }
 
-     override fun currentUid() = FirebaseAuth.getInstance().currentUser?.uid
 
      private fun getFollowsRef(fromUid: String, toUid: String) =
           database.child("users").child(fromUid).child("follows").child(toUid)
 
      private fun getFollowersRef(fromUid: String, toUid: String) =
           database.child("users").child(toUid).child("followers").child(fromUid)
+
+    private fun DataSnapshot.asUser(): User? =
+          getValue(User::class.java)?.copy(uid = key!!)
 
 }

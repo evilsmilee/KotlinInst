@@ -14,6 +14,7 @@ interface UsersRepository {
      fun addFollower(fromUid: String, toUid: String): Task<Unit>
      fun deleteFollower(fromUid: String, toUid: String): Task<Unit>
      fun getUser(): LiveData<User>
+     fun getUser(uid: String): LiveData<User>
      fun uploadUserPhoto(localImage: Uri): Task<Uri>
      fun updateUserPhoto(downloadUrl: Uri): Task<Unit>
      fun updateEmail(currentEmail: String, newEmail: String, password: String): Task<Unit>

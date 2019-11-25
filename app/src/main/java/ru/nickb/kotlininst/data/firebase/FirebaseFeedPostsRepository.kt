@@ -2,10 +2,8 @@ package ru.nickb.kotlininst.data.firebase
 
 import androidx.lifecycle.LiveData
 import com.google.android.gms.tasks.Task
-import ru.nickb.kotlininst.common.TaskSourceOnCompleteListener
-import ru.nickb.kotlininst.common.ValueEventListenerAdapter
-import ru.nickb.kotlininst.common.task
-import ru.nickb.kotlininst.common.toUnit
+import com.google.firebase.database.DataSnapshot
+import ru.nickb.kotlininst.common.*
 import ru.nickb.kotlininst.data.FeedPostLike
 import ru.nickb.kotlininst.data.FeedPostsRepository
 import ru.nickb.kotlininst.data.common.map
@@ -32,18 +30,33 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
 
     override fun createComment(postId: String, comment: Comment): Task<Unit> =
         database.child("comments").child(postId).push().setValue(comment).toUnit()
+            .addOnSuccessListener {
+                EventBus.publish(Event.CreateComment(postId, comment))
+            }
 
 
     override fun toggleLike(postId: String, uid: String): Task<Unit> {
         val reference = database.child("likes").child(postId).child(uid)
         return task { taskSource ->
-            reference.addListenerForSingleValueEvent(ValueEventListenerAdapter {
-                reference.setValueTrueOrRemove(!it.exists())
+            reference.addListenerForSingleValueEvent(ValueEventListenerAdapter {like->
+                if (!like.exists()) {
+                    reference.setValue(true).addOnSuccessListener {
+                        EventBus.publish(Event.CreateLike(postId, uid))
+                    }
+                } else {
+                    reference.removeValue()
+                }
                 taskSource.setResult(Unit)
             })
         }
 
     }
+
+    override fun getFeedPost(uid: String, postId: String): LiveData<FeedPost> =
+        FirebaseLiveData(database.child("feed-posts").child(uid).child(postId)).map {
+            it.asFeedPost()!!
+        }
+
 
 
     override fun getFeedPosts(uid: String): LiveData<List<FeedPost>> =
@@ -89,6 +102,12 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
 
                 })
         }
+
+    private fun DataSnapshot.asFeedPost(): FeedPost? =
+        getValue(FeedPost::class.java)?.copy(id = key)
+
+    private fun DataSnapshot.asComment(): Comment? =
+        getValue(Comment::class.java)?.copy(id = key)
 
 
 }
