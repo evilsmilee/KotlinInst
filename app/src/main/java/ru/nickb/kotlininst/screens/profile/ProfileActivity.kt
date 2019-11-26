@@ -20,7 +20,7 @@ class ProfileActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        setupBottomNavigation(4)
+
 
         edit_profile_button.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
@@ -40,6 +40,7 @@ class ProfileActivity : BaseActivity() {
         images_recycler.adapter = mAdapter
 
         setupAuthGuard {uid ->
+            setupBottomNavigation(uid,4)
             val viewModel = initViewModel<ProfileViewModel>()
             viewModel.init(uid)
             viewModel.user.observe(this, Observer {it?.let {
