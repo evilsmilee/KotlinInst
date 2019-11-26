@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_comments.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.models.User
+import ru.nickb.kotlininst.screens.common.loadUserPhoto
 import ru.nickb.kotlininst.screens.common.setupAuthGuard
 
 class CommentsActivity: BaseActivity() {
@@ -34,6 +35,7 @@ class CommentsActivity: BaseActivity() {
             viewModel.init(postId)
             viewModel.user.observe(this, Observer { it?.let  {
                 mUser = it
+                user_photo.loadUserPhoto(mUser.photo)
             }})
             viewModel.comments.observe(this, Observer { it?.let {
                 mAdapter.updateComments(it)

@@ -1,10 +1,8 @@
 package ru.nickb.kotlininst.screens.notifications
 
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
+import ru.nickb.kotlininst.common.BaseEventListener
 import ru.nickb.kotlininst.common.Event
 import ru.nickb.kotlininst.common.EventBus
 import ru.nickb.kotlininst.data.FeedPostsRepository
@@ -19,13 +17,12 @@ class NotificationsCreator(
     private val notificationsRepo: NotificationsRepository,
     private val usersRepo: UsersRepository,
     private val feedPostsRepo: FeedPostsRepository
-) : LifecycleOwner {
+) : BaseEventListener() {
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
+
 
     init {
-        lifecycleRegistry.currentState = Lifecycle.State.CREATED
-        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+
         EventBus.events.observe(this, Observer {
             it?.let { event ->
                 when (event) {
@@ -91,6 +88,6 @@ class NotificationsCreator(
         usersRepo.getUser(uid)
 
 
-    override fun getLifecycle(): Lifecycle = lifecycleRegistry
+
 
 }

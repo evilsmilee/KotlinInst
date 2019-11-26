@@ -1,4 +1,4 @@
-package ru.nickb.kotlininst.screens.profile
+package ru.nickb.kotlininst.screens.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,8 +6,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.nickb.kotlininst.R
-import ru.nickb.kotlininst.screens.common.SimpleCallback
-import ru.nickb.kotlininst.screens.common.loadImage
 
 class ImagesAdapter :
         RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {

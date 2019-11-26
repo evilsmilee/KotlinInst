@@ -2,21 +2,21 @@ package ru.nickb.kotlininst.data.firebase.common
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.Query
 import ru.nickb.kotlininst.common.ValueEventListenerAdapter
 
-class FirebaseLiveData(private val reference: DatabaseReference): LiveData<DataSnapshot>() {
+class FirebaseLiveData(private val query: Query): LiveData<DataSnapshot>() {
     private val listener = ValueEventListenerAdapter {
         value = it
     }
 
     override fun onActive() {
         super.onActive()
-        reference.addValueEventListener(listener)
+        query.addValueEventListener(listener)
     }
 
     override fun onInactive() {
         super.onInactive()
-        reference.removeEventListener(listener)
+        query.removeEventListener(listener)
     }
 }

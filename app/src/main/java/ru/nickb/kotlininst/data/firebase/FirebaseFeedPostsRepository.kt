@@ -14,6 +14,14 @@ import ru.nickb.kotlininst.models.FeedPost
 class FirebaseFeedPostsRepository : FeedPostsRepository {
 
 
+    override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> {
+        val reference = database.child("feed-posts").child(uid)
+            .push()
+       return reference.setValue(feedPost).toUnit().addOnSuccessListener {
+                EventBus.publish(Event.CreateFeedPost(feedPost.copy(id = reference.key)))
+            }
+    }
+
     override fun getLikes(postId: String): LiveData<List<FeedPostLike>> =
         FirebaseLiveData(database.child("likes").child(postId)).map {
             it.children.map { FeedPostLike(it.key) }
@@ -24,9 +32,9 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
             it.children.map { it.asComment()!! }
         }
 
-    override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> =
+   /* override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> =
         database.child("feed-posts").child(uid)
-            .push().setValue(feedPost).toUnit()
+            .push().setValue(feedPost).toUnit()*/
 
     override fun createComment(postId: String, comment: Comment): Task<Unit> =
         database.child("comments").child(postId).push().setValue(comment).toUnit()

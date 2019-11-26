@@ -25,14 +25,21 @@ class ShareActivity : BaseActivity() {
         setContentView(R.layout.activity_share)
         setupAuthGuard {
             mViewModel = initViewModel()
+
             mFirebase = FirebaseHelper(this)
+
             mCamera = CameraHelper(this)
             mCamera.takeCameraPicture()
+
             back_image.setOnClickListener { finish() }
             share_text.setOnClickListener { share() }
+
             mViewModel.user.observe(this, Observer{it?.let {
                 mUser = it
             }})
+            mViewModel.shareCompletedEvent.observe(this, Observer { it?.let {
+                finish()
+            } })
         }
     }
 
