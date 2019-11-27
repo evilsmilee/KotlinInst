@@ -13,8 +13,7 @@ import ru.nickb.kotlininst.screens.common.loadUserPhoto
 import ru.nickb.kotlininst.screens.common.setCaptionText
 
 class CommentsAdapter: RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
-
-    class ViewHolder(val view: View): RecyclerView.ViewHolder(view)
+    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     private var comments = listOf<Comment>()
 
@@ -27,15 +26,13 @@ class CommentsAdapter: RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val comment = comments[position]
         with(holder.view) {
-            comment.timestampDate()
             photo.loadUserPhoto(comment.photo)
             text.setCaptionText(comment.username, comment.text, comment.timestampDate())
         }
-
     }
 
     fun updateComments(newComments: List<Comment>) {
-        val diffResult = DiffUtil.calculateDiff(SimpleCallback(comments, newComments) {it.id!!})
+        val diffResult = DiffUtil.calculateDiff(SimpleCallback(comments, newComments) {it.id})
         this.comments = newComments
         diffResult.dispatchUpdatesTo(this)
     }
