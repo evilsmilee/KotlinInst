@@ -23,17 +23,20 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
         feed_recycler.adapter = mAdapter
         feed_recycler.layoutManager = LinearLayoutManager(this)
 
-        setupAuthGuard { uid: String ->
-            setupBottomNavigation(uid,0)
+        setupAuthGuard { uid ->
+            setupBottomNavigation(uid, 0)
             mViewModel = initViewModel()
             mViewModel.init(uid)
-            mViewModel.feedPosts.observe(this, Observer{it?.let{
-                mAdapter.updatePosts(it)
-            }})
-            mViewModel.goToCommentScreen.observe(this, Observer { it?.let {
-                postId ->
-                CommentsActivity.start(this, postId)
-            } })
+            mViewModel.feedPosts.observe(this, Observer {
+                it?.let {
+                    mAdapter.updatePosts(it)
+                }
+            })
+            mViewModel.goToCommentsScreen.observe(this, Observer {
+                it?.let { postId ->
+                    CommentsActivity.start(this, postId)
+                }
+            })
         }
     }
 
@@ -43,7 +46,8 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
 
     override fun loadLikes(postId: String, position: Int) {
         if (mViewModel.getLikes(postId) == null) {
-            mViewModel.loadLikes(postId).observe(this, Observer { it?.let {postLikes ->
+            mViewModel.loadLikes(postId).observe(this, Observer {
+                it?.let {postLikes ->
                 mAdapter.updatePostLikes(position, postLikes)
             } })
         }

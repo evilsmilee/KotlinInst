@@ -12,5 +12,4 @@ class FirebaseAuthManager: AuthManager {
 
     override fun signIn(email: String, password: String): Task<Unit> =
         auth.signInWithEmailAndPassword(email, password).toUnit()
-
 }

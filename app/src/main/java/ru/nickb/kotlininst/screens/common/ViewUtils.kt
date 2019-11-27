@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,7 @@ fun ImageView.loadUserPhoto(photoUrl: String?) =
 
 fun ImageView.loadImage(image: String?) =
     ifNotDestroyed {
+        Log.i("Okay", image.toString())
         GlideApp.with(this).load(image).centerCrop().into(this)
     }
 

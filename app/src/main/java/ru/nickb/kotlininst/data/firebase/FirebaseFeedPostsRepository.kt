@@ -15,26 +15,11 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
 
 
     override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> {
-        val reference = database.child("feed-posts").child(uid)
-            .push()
-       return reference.setValue(feedPost).toUnit().addOnSuccessListener {
-                EventBus.publish(Event.CreateFeedPost(feedPost.copy(id = reference.key)))
-            }
+        val reference = database.child("feed-posts").child(uid).push()
+        return reference.setValue(feedPost).toUnit().addOnSuccessListener {
+            EventBus.publish(Event.CreateFeedPost(feedPost.copy(id = reference.key)))
+        }
     }
-
-    override fun getLikes(postId: String): LiveData<List<FeedPostLike>> =
-        FirebaseLiveData(database.child("likes").child(postId)).map {
-            it.children.map { FeedPostLike(it.key) }
-        }
-
-    override fun getComments(postId: String): LiveData<List<Comment>> =
-        FirebaseLiveData(database.child("comments").child(postId)).map {
-            it.children.map { it.asComment()!! }
-        }
-
-   /* override fun createFeedPost(uid: String, feedPost: FeedPost): Task<Unit> =
-        database.child("feed-posts").child(uid)
-            .push().setValue(feedPost).toUnit()*/
 
     override fun createComment(postId: String, comment: Comment): Task<Unit> =
         database.child("comments").child(postId).push().setValue(comment).toUnit()
@@ -42,11 +27,20 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
                 EventBus.publish(Event.CreateComment(postId, comment))
             }
 
+    override fun getComments(postId: String): LiveData<List<Comment>> =
+        FirebaseLiveData(database.child("comments").child(postId)).map {
+            it.children.map { it.asComment()!! }
+        }
+
+    override fun getLikes(postId: String): LiveData<List<FeedPostLike>> =
+        FirebaseLiveData(database.child("likes").child(postId)).map {
+            it.children.map { FeedPostLike(it.key) }
+        }
 
     override fun toggleLike(postId: String, uid: String): Task<Unit> {
         val reference = database.child("likes").child(postId).child(uid)
         return task { taskSource ->
-            reference.addListenerForSingleValueEvent(ValueEventListenerAdapter {like->
+            reference.addListenerForSingleValueEvent(ValueEventListenerAdapter { like ->
                 if (!like.exists()) {
                     reference.setValue(true).addOnSuccessListener {
                         EventBus.publish(Event.CreateLike(postId, uid))
@@ -57,7 +51,6 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
                 taskSource.setResult(Unit)
             })
         }
-
     }
 
     override fun getFeedPost(uid: String, postId: String): LiveData<FeedPost> =
@@ -65,13 +58,10 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
             it.asFeedPost()!!
         }
 
-
-
     override fun getFeedPosts(uid: String): LiveData<List<FeedPost>> =
         FirebaseLiveData(database.child("feed-posts").child(uid)).map {
             it.children.map { it.asFeedPost()!! }
         }
-
 
     override fun copyFeedPosts(postsAuthorUid: String, uid: String): Task<Unit> =
         task { taskSource ->
@@ -80,34 +70,22 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
                 .equalTo(postsAuthorUid)
                 .addListenerForSingleValueEvent(ValueEventListenerAdapter {
                     val postsMap = it.children.map { it.key to it.value }.toMap()
-                    database.child("feed-posts").child(uid)
-                        .updateChildren(postsMap)
+                    database.child("feed-posts").child(uid).updateChildren(postsMap)
                         .toUnit()
-                        .addOnCompleteListener(
-                            TaskSourceOnCompleteListener(
-                                taskSource
-                            )
-                        )
+                        .addOnCompleteListener(TaskSourceOnCompleteListener(taskSource))
                 })
-
         }
 
     override fun deleteFeedPosts(postsAuthorUid: String, uid: String): Task<Unit> =
         task { taskSource ->
             database.child("feed-posts").child(uid)
-                .orderByChild(uid)
+                .orderByChild("uid")
                 .equalTo(postsAuthorUid)
                 .addListenerForSingleValueEvent(ValueEventListenerAdapter {
-                    val postsMap = it.children.map { it.key to it.value }.toMap()
-                    database.child("feed-posts").child(uid)
-                        .updateChildren(postsMap)
+                    val postsMap = it.children.map { it.key to null }.toMap()
+                    database.child("feed-posts").child(uid).updateChildren(postsMap)
                         .toUnit()
-                        .addOnCompleteListener(
-                            TaskSourceOnCompleteListener(
-                                taskSource
-                            )
-                        )
-
+                        .addOnCompleteListener(TaskSourceOnCompleteListener(taskSource))
                 })
         }
 
@@ -116,6 +94,5 @@ class FirebaseFeedPostsRepository : FeedPostsRepository {
 
     private fun DataSnapshot.asComment(): Comment? =
         getValue(Comment::class.java)?.copy(id = key)
-
 
 }

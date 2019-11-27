@@ -9,8 +9,10 @@ abstract class BaseEventListener: LifecycleOwner {
     private val lifecycleRegistry = LifecycleRegistry(this)
 
     init {
-        lifecycleRegistry.currentState = Lifecycle.State.CREATED
-        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+        lifecycleRegistry.markState(Lifecycle.State.STARTED)
+        /*lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED*/
     }
 
     override fun getLifecycle(): Lifecycle = lifecycleRegistry

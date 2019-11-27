@@ -21,22 +21,26 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         commonViewModel = ViewModelProviders.of(this).get(CommonViewModel::class.java)
-        commonViewModel.errorMessage.observe(this, Observer { it.let {
+        commonViewModel.errorMessage.observe(this, Observer {
+            it?.let {
                 showToast(it)
             }
         })
     }
 
-     inline fun <reified T : BaseViewModel> initViewModel(): T =
+    inline fun <reified T : BaseViewModel> initViewModel(): T =
         ViewModelProviders.of(this, ViewModelFactory(
             application as InstagramApp,
             commonViewModel,
-            commonViewModel)
-    ).get(T::class.java)
+            commonViewModel)).get(T::class.java)
 
     fun goToLogin() {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
+    companion object {
+        const val TAG = "BaseActivity"
     }
 
 }

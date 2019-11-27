@@ -28,6 +28,7 @@ class ViewModelFactory(
         val authManager = app.authManager
         val notificationsRepo = app.notificationsRepo
         val searchRepo = app.searchRepo
+
         if (modelClass.isAssignableFrom(AddFriendViewModel::class.java)) {
             return AddFriendViewModel(onFailureListener, usersRepo, feedPostsRepo) as T
         } else if (modelClass.isAssignableFrom(EditProfileViewModel::class.java)) {
@@ -37,35 +38,20 @@ class ViewModelFactory(
         } else if (modelClass.isAssignableFrom(ProfileSettingsViewModel::class.java)) {
             return ProfileSettingsViewModel(authManager, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(
-                authManager,
-                app,
-                commonViewModel,
-                onFailureListener
-            ) as T
+            return LoginViewModel(authManager, app, commonViewModel, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             return ProfileViewModel(usersRepo, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-            return RegisterViewModel(
-                commonViewModel,
-                app,
-                usersRepo,
-                onFailureListener
-            ) as T
+            return RegisterViewModel(commonViewModel, app, usersRepo, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(ShareViewModel::class.java)) {
-            return ShareViewModel(
-                usersRepo,
-                feedPostsRepo,
-                onFailureListener
-            ) as T
+            return ShareViewModel(usersRepo, feedPostsRepo, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(CommentsViewModel::class.java)) {
-             return CommentsViewModel(feedPostsRepo, onFailureListener, usersRepo) as T
+            return CommentsViewModel(feedPostsRepo, onFailureListener, usersRepo) as T
         } else if (modelClass.isAssignableFrom(NotificationsViewModel::class.java)) {
-              return NotificationsViewModel(notificationsRepo, onFailureListener) as T
+            return NotificationsViewModel(notificationsRepo, onFailureListener) as T
         } else if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             return SearchViewModel(searchRepo, onFailureListener) as T
-        } else
-         {
+        } else {
             error("Unknown view model class $modelClass")
         }
     }

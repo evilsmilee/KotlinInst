@@ -8,13 +8,14 @@ fun <A, B> LiveData<A>.map(f: (A) -> B): LiveData<B> =
 fun <T> LiveData<T>.observeFirstNotNull(lifecycleOwner: LifecycleOwner, observer: (T) -> Unit) {
     observe(lifecycleOwner, object: Observer<T>{
         override fun onChanged(value: T?) {
-            value?.let {
+            value?.let{
                 observer(value)
                 removeObserver(this)
             }
         }
     })
 }
+
 
 /**
  * This function creates a [LiveData] of a [Pair] of the two types provided. The resulting LiveData is updated whenever either input LiveData updates and both LiveData have updated at least once before.

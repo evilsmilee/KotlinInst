@@ -6,8 +6,8 @@ import com.google.android.gms.tasks.OnFailureListener
 import ru.nickb.kotlininst.data.UsersRepository
 import ru.nickb.kotlininst.screens.common.BaseViewModel
 
-class ProfileViewModel(private val usersRepo: UsersRepository,
-                       onFailureListener: OnFailureListener): BaseViewModel(onFailureListener) {
+class ProfileViewModel(private val usersRepo: UsersRepository, onFailureListener: OnFailureListener)
+    : BaseViewModel(onFailureListener) {
     val user = usersRepo.getUser()
     lateinit var images: LiveData<List<String>>
 

@@ -22,7 +22,8 @@ class ShareViewModel(private val usersRepo: UsersRepository,
             usersRepo.uploadUserImage(user.uid, imageUri).onSuccessTask { downloadUrl ->
                 Tasks.whenAll(
                     usersRepo.setUserImage(user.uid, downloadUrl!!),
-                    feedPostsRepo.createFeedPost(user.uid, mkFeedPost(user, caption, downloadUrl))
+                    feedPostsRepo.createFeedPost(user.uid, mkFeedPost(user, caption,
+                        downloadUrl.toString()))
                 )
             }.addOnCompleteListener {
                 _shareCompletedEvent.call()
@@ -30,11 +31,11 @@ class ShareViewModel(private val usersRepo: UsersRepository,
         }
     }
 
-    private fun mkFeedPost(user: User, caption: String, imageUri: Uri): FeedPost {
+    private fun mkFeedPost(user: User, caption: String, imageUri: String): FeedPost {
         return FeedPost(
             uid = user.uid,
             username = user.username,
-            image = imageUri.toString(),
+            image = imageUri,
             caption = caption,
             photo = user.photo
         )

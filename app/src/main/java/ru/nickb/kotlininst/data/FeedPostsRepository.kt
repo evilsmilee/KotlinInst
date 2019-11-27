@@ -7,7 +7,6 @@ import ru.nickb.kotlininst.models.FeedPost
 
 
 interface FeedPostsRepository {
-
     fun copyFeedPosts(postsAuthorUid: String, uid: String): Task<Unit>
     fun deleteFeedPosts(postsAuthorUid: String, uid: String): Task<Unit>
     fun getFeedPost(uid: String, postId: String): LiveData<FeedPost>
@@ -20,4 +19,4 @@ interface FeedPostsRepository {
 
 }
 
-data class FeedPostLike(val userId: String?)
+data class FeedPostLike(val userId: String)

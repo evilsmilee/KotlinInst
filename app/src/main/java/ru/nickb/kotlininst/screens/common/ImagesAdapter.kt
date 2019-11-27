@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.nickb.kotlininst.R
 
-class ImagesAdapter :
-        RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
+class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
 
     class ViewHolder(val image: ImageView) : RecyclerView.ViewHolder(image)
 
@@ -16,10 +15,7 @@ class ImagesAdapter :
 
     fun updateImages(newImages: List<String>) {
        val diffResult = DiffUtil.calculateDiff(
-           SimpleCallback(
-               images,
-               newImages
-           ) { it })
+           SimpleCallback(images, newImages) { it })
         this.images = newImages
         diffResult.dispatchUpdatesTo(this)
     }
@@ -32,10 +28,7 @@ class ImagesAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.image.loadImage(images[position])
-
     }
-
-
 
     override fun getItemCount(): Int = images.size
 }

@@ -2,6 +2,7 @@ package ru.nickb.kotlininst.screens.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -51,6 +52,7 @@ class ProfileActivity : BaseActivity() {
 
             } })
             viewModel.images.observe(this, Observer { it?.let {images ->
+                Log.i("imgimgimg", images.toString())
                 mAdapter.updateImages(images)
                 posts_count_text.text = images.size.toString()
             } })

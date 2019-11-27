@@ -34,7 +34,8 @@ class NotificationsAdapter: RecyclerView.Adapter<NotificationsAdapter.ViewHolder
                 NotificationType.Like -> context.getString(R.string.liked_your_post)
                 NotificationType.Follow -> context.getString(R.string.started_following_you)
             }
-           notification_text.setCaptionText(notification.username, notificationText)
+           notification_text.setCaptionText(notification.username, notificationText,
+               notification.timestampDate())
            post_image.loadImageOrHide(notification.postImage)
        }
     }
