@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+
 import kotlinx.android.synthetic.main.add_firends_item.view.*
 import ru.nickb.kotlininst.R
 import ru.nickb.kotlininst.screens.common.loadUserPhoto
